@@ -210,6 +210,16 @@ class AbstractGraphTest(object):
         self.assert_(v3 in g.predecessors(v4))
         res = tuple(g.predecessors(v3, v4))
         self.assert_(v1 in res and v3 in res)
-        
 
-       
+    def test_successors(self):
+        g = self.graph
+        v1, v2, v3, v4 = g.create_vertex(), g.create_vertex(), g.create_vertex(), g.create_vertex()
+        for v in [v1, v2, v3, v4]:
+            self.assert_(() == tuple(g.successors(v)))
+        e1 = g.create_edge(v1, v2)
+        self.assert_(v2 in g.successors(v1))
+        e2 = g.create_edge(v2, v3, v4)
+        self.assert_(v1 not in g.successors(v2))
+        self.assert_(v2 not in g.successors(v2))
+        self.assert_(v3 in g.successors(v2))
+        self.assert_(v4 in g.successors(v2))
