@@ -106,7 +106,7 @@ class IImmutableGraph(Interface):
 
     def tail(edge):
         """\
-        Returns the tail (vertices or edges) of an edge.
+        Returns the tail (an iterable of vertices or edges) of an edge.
 
         `edge`
             An edge identifier.

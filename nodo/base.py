@@ -73,9 +73,8 @@ class BaseImmutableGraph(object):
         return v2 in self.neighbours(v1)
 
     def predecessors(self, *identifiers):
-        for edge in self.ingoing_edges(identifiers):
-            for target in self.tail(edge):
-                yield target
+        head = self.head
+        return (head(edge) for edge in self.ingoing_edges(identifiers))
 
     def successors(self, *identifiers):
         for edge in self.outgoing_edges(identifiers):
@@ -93,7 +92,7 @@ class BaseImmutableGraph(object):
         return len(self.tail(edge)) + 1
 
     def degree(self, vertex):
-        return len(self.ingoing_edges(vertex))
+        return sum(1 for e in self.ingoing_edges(vertex))
 
     def is_uniform(self, k=None):
         card = self.card
