@@ -74,10 +74,10 @@ class BaseImmutableGraph(object):
 
     def predecessors(self, *identifiers):
         head = self.head
-        return (head(edge) for edge in self.ingoing_edges(identifiers))
+        return (head(edge) for edge in self.ingoing_edges(*identifiers))
 
     def successors(self, *identifiers):
-        for edge in self.outgoing_edges(identifiers):
+        for edge in self.outgoing_edges(*identifiers):
             for target in self.tail(edge):
                 yield target
 

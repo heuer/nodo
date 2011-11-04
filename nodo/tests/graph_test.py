@@ -196,4 +196,20 @@ class AbstractGraphTest(object):
         self.assert_(g.is_neighbour(v1, v2))
         self.assert_(v1 in g.neighbours(v2))
         self.assert_(v2 in g.neighbours(v1))
+
+    def test_predecessors(self):
+        g = self.graph
+        v1, v2, v3, v4 = g.create_vertex(), g.create_vertex(), g.create_vertex(), g.create_vertex()
+        for v in [v1, v2, v3, v4]:
+            self.assert_(() == tuple(g.predecessors(v)))
+        e1 = g.create_edge(v1, v2)
+        self.assert_(v1 in g.predecessors(v2))
+        e2 = g.create_edge(v1, v3)
+        e4 = g.create_edge(v3, v4)
+        self.assert_(v1 in g.predecessors(v3))
+        self.assert_(v3 in g.predecessors(v4))
+        res = tuple(g.predecessors(v3, v4))
+        self.assert_(v1 in res and v3 in res)
+        
+
        
