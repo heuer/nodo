@@ -278,34 +278,20 @@ class IGraph(IImmutableGraph):
     """\
     Extends the `ImmutableGraph` about methods to create vertices and edges.
     """
-    def create_vertex():
+    def create_vertex(value=None, datatype=None):
         """\
         Creates a vertex and returns the identifier of the vertex.
-        """
 
-    def create_literal_vertex(value, datatype):
-        """\
-        Creates a literal vertex and returns the identifier of the vertex.
-
-        If a literal vertex with the provided value/datatype tuple exists, the
-        existing vertex is returned.
+        If `value` and `datatype` is ``None``, a new vertex will be created.
+        If a `value` (and optionally a datatype) is provided, an existing vertex with the
+        provided `value` (and datatype) is returned or a vertex with the provided arguments
+        will be created.
 
         `value`
-            The literal's value (a string)
+            An optional string value
+            If `datatype` is ``None``, xsd:string is assumed for the datatype.
         `datatype`
-            An IRI (a string)
-        """
-
-    def create_string_vertex(value):
-        """\
-        Creates a string vertex and returns the identifier of the vertex.
-
-        Shortcut for::
-
-            graph.create_literal_vertex(value, xsd:string)
-
-        `value`
-            The string value.
+            An optional IRI indicating the datatype of the `value`.
         """
 
     def create_iri_vertex(value):

@@ -223,3 +223,36 @@ class AbstractGraphTest(object):
         self.assert_(v2 not in g.successors(v2))
         self.assert_(v3 in g.successors(v2))
         self.assert_(v4 in g.successors(v2))
+
+    def test_create_egde_illegal(self):
+        g = self.graph
+        v1, v2 = g.create_vertex(), g.create_vertex()
+        e = g.create_edge(v1, v2)
+        self.assert_(e)
+        try:
+            g.create_edge(e, v1)
+            self.fail('An edge cannot be used as head/source. Expected a TypeError')
+        except TypeError:
+            pass
+
+    def test_create_egde_illegal2(self):
+        g = self.graph
+        v1, v2 = g.create_vertex(), g.create_vertex()
+        e = g.create_edge(v1, v2)
+        self.assert_(e)
+        try:
+            g.create_edge(None, v2)
+            self.fail('None is not allowed as head')
+        except TypeError:
+            pass
+
+    def test_create_egde_illegal3(self):
+        g = self.graph
+        v1, v2 = g.create_vertex(), g.create_vertex()
+        e = g.create_edge(v1, v2)
+        self.assert_(e)
+        try:
+            g.create_edge(v1, None)
+            self.fail('None is not allowed as tail')
+        except TypeError:
+            pass

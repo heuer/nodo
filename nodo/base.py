@@ -128,9 +128,6 @@ class BaseGraph(BaseImmutableGraph):
     """\
     Provides some default implementations for a `IGraph` implementation.
     """
-    def create_string_vertex(self, value):
-        return self.create_literal_vertex(value, XSD.string)
-
     def create_iri_vertex(self, value):
         return self.create_literal_vertex(value, XSD.anyURI)
 
