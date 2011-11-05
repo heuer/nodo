@@ -129,10 +129,10 @@ class BaseGraph(BaseImmutableGraph):
     Provides some default implementations for a `IGraph` implementation.
     """
     def create_iri_vertex(self, value):
-        return self.create_literal_vertex(value, XSD.anyURI)
+        return self.create_vertex(value, XSD.anyURI)
 
     def create_integer_vertex(self, value):
-        return self.create_literal_vertex(value, XSD.integer)
+        return self.create_vertex(value, XSD.integer)
 
     def delete(self, identifier):
         if is_edge(identifier):

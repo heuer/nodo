@@ -72,9 +72,9 @@ class AbstractGraphTest(object):
         g = self.graph
         v1 = g.find_string_vertex(u'hello')
         self.assert_(not v1)
-        v1 = g.create_string_vertex(u'hello')
+        v1 = g.create_vertex(u'hello')
         self.assert_(v1)
-        v2 = g.create_string_vertex(u'hello')
+        v2 = g.create_vertex(u'hello')
         self.assert_(v2)
         self.assert_(v1 == v2)
         self.assert_(v1 == g.find_string_vertex(u'hello'))
