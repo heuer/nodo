@@ -58,7 +58,7 @@ class IImmutableGraph(Interface):
     """\
     Represents an immutable `hypergraph <http://en.wikipedia.org/Hypergraph>`_.
     """
-    def find_literal_vertex(value, datatype):
+    def find_vertex(value, datatype=None):
         """\
         Returns the vertex identifier for the provided value/datatype tuple
         or ``None`` if no such vertex exists.
@@ -439,6 +439,16 @@ class IGraphHandler(Interface):
         """
 
     def end():
+        """\
+
+        """
+
+    def start_edge():
+        """\
+
+        """
+
+    def end_edge():
         """\
 
         """

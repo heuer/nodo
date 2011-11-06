@@ -49,13 +49,13 @@ class BaseImmutableGraph(object):
     implementation.
     """
     def find_string_vertex(self, value):
-        return self.find_literal_vertex(value, XSD.string)
+        return self.find_vertex(value, XSD.string)
 
     def find_integer_vertex(self, value):
-        return self.find_literal_vertex(value, XSD.integer)
+        return self.find_vertex(value, XSD.integer)
 
     def find_iri_vertex(self, value):
-        return self.find_literal_vertex(value, XSD.anyURI)
+        return self.find_vertex(value, XSD.anyURI)
 
     def is_edge(self, identifier):
         return self.kind(identifier) == consts.KIND_EDGE

@@ -70,7 +70,7 @@ class AbstractGraphTest(object):
 
     def test_create_string_vertex(self):
         g = self.graph
-        v1 = g.find_string_vertex(u'hello')
+        v1 = g.find_vertex(u'hello')
         self.assert_(not v1)
         v1 = g.create_vertex(u'hello')
         self.assert_(v1)
@@ -79,7 +79,7 @@ class AbstractGraphTest(object):
         v2 = g.create_vertex(u'hello')
         self.assert_(v2)
         self.assert_(v1 == v2)
-        self.assert_(v1 == g.find_string_vertex(u'hello'))
+        self.assert_(v1 == g.find_vertex(u'hello'))
         self.assert_(g.literal(v1) == (u'hello', XSD.string))
 
     def test_create_integer_vertex(self):
@@ -260,3 +260,44 @@ class AbstractGraphTest(object):
             self.fail('None is not allowed as tail')
         except TypeError:
             pass
+
+    def test_lit_c14n(self):
+        g = self.graph
+        v1 = g.find_vertex('00001', XSD.integer)
+        self.assert_(not v1)
+        v1 = g.create_vertex('00001', XSD.integer)
+        self.assert_(v1)
+        self.assert_(u'1', g.literal(v1)[0])
+
+    def test_lit_boolean(self):
+        g = self.graph
+        v1 = g.find_vertex('1', XSD.boolean)
+        self.assert_(not v1)
+        v1 = g.create_vertex('1', XSD.boolean)
+        self.assert_(v1)
+        self.assert_(u'true', g.literal(v1)[0])
+
+    def test_lit_boolean2(self):
+        g = self.graph
+        v1 = g.find_vertex('true', XSD.boolean)
+        self.assert_(not v1)
+        v1 = g.create_vertex('true', XSD.boolean)
+        self.assert_(v1)
+        self.assert_(u'true', g.literal(v1)[0])
+
+    def test_lit_boolean3(self):
+        g = self.graph
+        v1 = g.find_vertex('0', XSD.boolean)
+        self.assert_(not v1)
+        v1 = g.create_vertex('0', XSD.boolean)
+        self.assert_(v1)
+        self.assert_(u'false', g.literal(v1)[0])
+
+    def test_lit_boolean4(self):
+        g = self.graph
+        v1 = g.find_vertex('false', XSD.boolean)
+        self.assert_(not v1)
+        v1 = g.create_vertex('false', XSD.boolean)
+        self.assert_(v1)
+        self.assert_(u'false', g.literal(v1)[0])
+
