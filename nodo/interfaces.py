@@ -66,13 +66,8 @@ class IImmutableGraph(Interface):
         `value`
             The literal's value (a string)
         `datatype`
-            An IRI (a string)
-        """
-
-    def find_string_vertex(value):
-        """\
-        Returns the vertex identifier for the provided string value or
-        ``None`` if no such vertex exists.
+            An IRI (a string) or ``None`` to indicate that the value has the datatype
+            ``xsd:string``.
         """
 
     def find_integer_vertex(value):

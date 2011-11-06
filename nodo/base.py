@@ -48,9 +48,6 @@ class BaseImmutableGraph(object):
     Provides some default implementations for an `IImmutableGraph`
     implementation.
     """
-    def find_string_vertex(self, value):
-        return self.find_vertex(value, XSD.string)
-
     def find_integer_vertex(self, value):
         return self.find_vertex(value, XSD.integer)
 
