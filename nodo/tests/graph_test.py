@@ -319,3 +319,12 @@ class AbstractGraphTest(object):
         g2e = g.create_edge(g2v1, g2v2)
         self.assert_(g2e in g2.outgoing_edges(g2v1))
         self.assert_(g2e in g2.ingoing_edges(g2v2))
+
+    def test_edge_edges(self):
+        g = self.graph
+        v1, v2, v3, v4 = g.create_vertex(), g.create_vertex(), g.create_vertex(), g.create_vertex()
+        e1 = g.create_edge(v1, v2)
+        e2 = g.create_edge(v1, e1)
+        self.assert_(e1 in g.outgoing_edges(v1))
+        self.assert_(e1 in g.ingoing_edges(v2))
+        self.assert_(e2 in g.ingoing_edges(e1))
