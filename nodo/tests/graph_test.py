@@ -301,3 +301,21 @@ class AbstractGraphTest(object):
         self.assert_(v1)
         self.assert_(u'false', g.literal(v1)[0])
 
+    def test_lit_edges(self):
+        g = self.graph
+        v1 = g.create_vertex(u'Pumuckl')
+        v2 = g.create_vertex(u'Meister Eder')
+        self.assert_(len(tuple(g.outgoing_edges(v1))) == 0)
+        self.assert_(len(tuple(g.ingoing_edges(v2))) == 0)
+        e = g.create_edge(v1, v2)
+        self.assert_(e in g.outgoing_edges(v1))
+        self.assert_(e in g.ingoing_edges(v2))
+
+        g2 = self.create_empty_graph()
+        g2v1 = g2.create_vertex(u'Pumuckl')
+        g2v2 = g2.create_vertex(u'Meister Eder')
+        self.assert_(len(tuple(g2.outgoing_edges(g2v1))) == 0)
+        self.assert_(len(tuple(g2.ingoing_edges(g2v2))) == 0)
+        g2e = g.create_edge(g2v1, g2v2)
+        self.assert_(g2e in g2.outgoing_edges(g2v1))
+        self.assert_(g2e in g2.ingoing_edges(g2v2))
