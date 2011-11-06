@@ -47,9 +47,9 @@ KIND_VERTEX = 1
 KIND_EDGE = 2
 KIND_LITERAL = 3
 
-_tmp = sorted([i for i in dir(XSD) if i[0] != u'_' and i != u'XSD'])
+_tmp = sorted([getattr(XSD, i) for i in dir(XSD) if i[0] != u'_' and i != u'XSD'])
 
-XSDID2URI = dict(zip(_tmp, count(1)))
-XSDURI2ID = dict(zip(count(1), _tmp))
+XSDID2URI = dict(zip(count(1), _tmp))
+XSDURI2ID = dict(zip(_tmp, count(1)))
 
 del _tmp

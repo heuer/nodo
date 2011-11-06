@@ -74,6 +74,8 @@ class AbstractGraphTest(object):
         self.assert_(not v1)
         v1 = g.create_vertex(u'hello')
         self.assert_(v1)
+        self.assert_(v1 in g)
+        self.assert_(v1 in g.vertices)
         v2 = g.create_vertex(u'hello')
         self.assert_(v2)
         self.assert_(v1 == v2)
@@ -86,11 +88,13 @@ class AbstractGraphTest(object):
         self.assert_(not v1)
         v1 = g.create_integer_vertex(666)
         self.assert_(v1)
+        self.assert_(v1 in g)
+        self.assert_(v1 in g.vertices)
         v2 = g.create_integer_vertex(666)
         self.assert_(v2)
         self.assert_(v1 == v2)
         self.assert_(v1 == g.find_integer_vertex(666))
-        self.assert_(g.literal(v1) == (666, XSD.integer))
+        self.assert_(g.literal(v1) == (str(666), XSD.integer))
 
     def test_create_edge(self):
         g = self.graph
