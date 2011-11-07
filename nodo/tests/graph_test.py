@@ -61,6 +61,13 @@ class AbstractGraphTest(object):
         self.assert_(g.is_edge(e))
         self.assert_(constants.KIND_EDGE == g.kind(e))
 
+    def test_kind_literal(self):
+        g = self.graph
+        v = g.create_vertex(u'Pitje Puck')
+        self.assert_(g.is_literal(v))
+        self.assert_(g.is_vertex(v))
+        self.assert_(constants.KIND_LITERAL == g.kind(v))
+
     def test_create_vertex(self):
         g = self.graph
         v = g.create_vertex()
