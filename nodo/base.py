@@ -69,6 +69,10 @@ class BaseImmutableGraph(object):
     def is_neighbour(self, v1, v2):
         return v2 in self.neighbours(v1)
 
+    def value(self, identifier):
+        lit = self.literal(identifier)
+        return lit[0] if lit else None
+
     def predecessors(self, *identifiers):
         head = self.head
         return (head(edge) for edge in self.ingoing_edges(*identifiers))

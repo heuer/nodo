@@ -335,3 +335,25 @@ class AbstractGraphTest(object):
         self.assert_(e1 in g.outgoing_edges(v1))
         self.assert_(e1 in g.ingoing_edges(v2))
         self.assert_(e2 in g.ingoing_edges(e1))
+
+    def test_literal(self):
+        g = self.graph
+        value = u'Pumuckl'
+        v = g.create_vertex(value)
+        self.assert_((value, XSD.string) == g.literal(v))
+
+    def test_literal2(self):
+        g = self.graph
+        v = g.create_vertex()
+        self.assert_(None is g.literal(v))
+
+    def test_value(self):
+        g = self.graph
+        value = u'Pumuckl'
+        v = g.create_vertex(value)
+        self.assert_(value == g.value(v))
+
+    def test_value2(self):
+        g = self.graph
+        v = g.create_vertex()
+        self.assert_(None is g.value(v))

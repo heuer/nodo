@@ -91,6 +91,19 @@ class IImmutableGraph(Interface):
             A (literal) vertex identifier.
         """
 
+    def value(identifier):
+        """\
+        Returns the value part of a literal vertex.
+
+        Does the same as::
+
+            lit = graph.literal(identifier)
+            value = None if lit is None else lit[0]
+
+        `identifier`
+            A (literal) vertex identifier.
+        """
+
     def head(edge):
         """\
         Returns the head (a vertex or an edge) of the provided `edge`.
