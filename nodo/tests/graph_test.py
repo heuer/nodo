@@ -359,3 +359,39 @@ class AbstractGraphTest(object):
         g = self.graph
         v = g.create_vertex()
         self.assert_(None is g.value(v))
+
+    def test_delete_vertex(self):
+        g = self.graph
+        v = g.create_vertex()
+        self.assert_(v in g)
+        self.assert_(v in g.vertices)
+        self.assert_((v,) == tuple(g.vertices))
+        g.delete_vertex(v)
+        self.assert_(v not in g)
+        self.assert_(v not in g.vertices)
+        self.assert_(tuple() == tuple(g.vertices))
+
+    def test_delete_vertex2(self):
+        g = self.graph
+        v = g.create_vertex('Pumuckl')
+        self.assert_(v in g)
+        self.assert_(v in g.vertices)
+        self.assert_((v,) == tuple(g.vertices))
+        g.delete_vertex(v)
+        self.assert_(v not in g)
+        self.assert_(v not in g.vertices)
+        self.assert_(tuple() == tuple(g.vertices))
+
+    def test_delete_vertex3(self):
+        g = self.graph
+        v1, v2 = g.create_vertex(), g.create_vertex()
+        self.assert_(v1 in g)
+        self.assert_(v1 in g.vertices)
+        self.assert_(v2 in g)
+        self.assert_(v2 in g.vertices)
+        e = g.create_edge(v1, v2)
+        self.assert_(e in g)
+        g.delete_vertex(v1)
+        self.assert_(v1 not in g)
+        self.assert_(v1 not in g.vertices)
+        self.assert_(e not in g)
