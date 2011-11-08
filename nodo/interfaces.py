@@ -257,7 +257,8 @@ class IImmutableGraph(Interface):
 
     def is_uniform(k=None):
         """\
-        Returns if the graph is uniform: All edges have the same cardinality `k`.
+        Returns if the graph is uniform: All edges have the same cardinality `k`
+        (the graph is uniform iff ``corank() == rank()``)
 
         `k`
             Optional cardinality to test against.
@@ -313,7 +314,7 @@ class IGraph(IImmutableGraph):
 
         Shortcut for::
 
-            graph.create_literal_vertex(value, xsd:anyURI)
+            graph.create_vertex(value, xsd:anyURI)
 
         `value`
             The IRI value (a string).
@@ -325,7 +326,7 @@ class IGraph(IImmutableGraph):
 
         Shortcut for::
 
-            graph.create_literal_vertex(value, xsd:integer)
+            graph.create_vertex(value, xsd:integer)
 
         `value`
             The integer value.
