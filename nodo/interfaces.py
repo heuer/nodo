@@ -337,6 +337,40 @@ class IGraph(IImmutableGraph):
             An iterable of targets.
         """
 
+    def add_tail(edge, *identifiers):
+        """\
+        Adds the provided `identifiers` to the `edge`'s tail and returns
+        the edge identifier.
+
+        .. note::
+
+            If the backend supports immutable edges only, a new edge may be
+            created which replaces the provided edge.
+
+
+        `edge`
+            The edge to add the identifiers to.
+        """
+
+    def remove_tail(edge, *identifiers):
+        """\
+        Removes the provided `identifiers` from the `edge`'s tail and returns
+        the edge identifier.
+
+        .. note::
+
+            If the backend supports immutable edges only, a new edge may be
+            created which replaces the provided edge.
+
+        .. note::
+
+            If the removal of the provided identifiers result into an empty
+            tail, a ``ValueError`` is raised.
+
+        `edge`
+            The edge to add the identifiers to.
+        """
+
     def delete_vertex(identifier):
         """\
         Deletes a vertex.
@@ -359,6 +393,11 @@ class IGraph(IImmutableGraph):
 
         `identifier`
             A vertex or an edge identifier.
+        """
+
+    def __delitem__(identifier):
+        """\
+        Deletes a vertex or an edge.
         """
 
 class IConnection(Interface):

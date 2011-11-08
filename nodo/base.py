@@ -141,6 +141,9 @@ class BaseGraph(BaseImmutableGraph):
         else:
             self.delete_vertex(identifier)
 
+    def __delitem__(self, identifier):
+        self.delete(identifier)
+
 
 class BaseConnection(object):
     """\
