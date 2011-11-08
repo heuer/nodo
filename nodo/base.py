@@ -136,7 +136,7 @@ class BaseGraph(BaseImmutableGraph):
         return self.create_vertex(value, XSD.integer)
 
     def delete(self, identifier):
-        if is_edge(identifier):
+        if self.is_edge(identifier):
             self.delete_edge(identifier)
         else:
             self.delete_vertex(identifier)

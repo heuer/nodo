@@ -409,3 +409,25 @@ class AbstractGraphTest(object):
         self.assert_(v1 not in g)
         self.assert_(v1 not in g.vertices)
         self.assert_(e not in g)
+
+    def test_delete_vertex4(self):
+        g = self.graph
+        v = g.create_vertex()
+        self.assert_(v in g)
+        self.assert_(v in g.vertices)
+        self.assert_((v,) == tuple(g.vertices))
+        g.delete(v)
+        self.assert_(v not in g)
+        self.assert_(v not in g.vertices)
+        self.assert_(tuple() == tuple(g.vertices))
+
+    def test_delete_vertex5(self):
+        g = self.graph
+        v = g.create_vertex()
+        self.assert_(v in g)
+        self.assert_(v in g.vertices)
+        self.assert_((v,) == tuple(g.vertices))
+        del g[v]
+        self.assert_(v not in g)
+        self.assert_(v not in g.vertices)
+        self.assert_(tuple() == tuple(g.vertices))
