@@ -89,6 +89,13 @@ class BaseImmutableGraph(object):
         except ValueError:
             return 0
 
+    def corank(self):
+        card = self.card
+        try:
+            return min((card(e) for e in self.edges))
+        except ValueError:
+            return 0
+
     def card(self, edge):
         return len(self.tail(edge)) + 1
 

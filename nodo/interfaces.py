@@ -234,6 +234,11 @@ class IImmutableGraph(Interface):
         Returns the maximum cardinality of any of the edges.
         """
 
+    def corank():
+        """\
+        Returns the minimum cardinality of any of the edges.
+        """
+
     def card(edge):
         """\
         Returns the cardinality of the provided edge.

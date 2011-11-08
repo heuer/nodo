@@ -135,12 +135,15 @@ class AbstractGraphTest(object):
         g = self.graph
         v1, v2, v3 = g.create_vertex(), g.create_vertex(), g.create_vertex()
         self.assert_(0 == g.rank())
+        self.assert_(0 == g.corank())
         e1 = g.create_edge(v1, v2)
         self.assert_(2 == g.card(e1))
         self.assert_(2 == g.rank())
+        self.assert_(2 == g.corank())
         e2 = g.create_edge(v1, v2, v3)
         self.assert_(3 == g.card(e2))
         self.assert_(3 == g.rank())
+        self.assert_(2 == g.corank())
 
     def test_degree(self):
         g = self.graph
