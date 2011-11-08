@@ -434,3 +434,14 @@ class AbstractGraphTest(object):
         self.assert_(v not in g)
         self.assert_(v not in g.vertices)
         self.assert_(tuple() == tuple(g.vertices))
+
+    def test_replace_tail(self):
+        g = self.graph
+        v1, v2, v3 = g.create_vertex(), g.create_vertex(), g.create_vertex()
+        e = g.create_edge(v1, v2)
+        self.assert_(v1 == g.head(e))
+        self.assert_((v2,) == tuple(g.tail(e)))
+        e = g.replace_tail(e, v3)
+        self.assert_(v1 == g.head(e))
+        self.assert_((v3,) == tuple(g.tail(e)))
+

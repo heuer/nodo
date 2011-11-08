@@ -142,6 +142,11 @@ class BaseGraph(BaseImmutableGraph):
     def create_integer_vertex(self, value):
         return self.create_vertex(value, XSD.integer)
 
+    def replace_tail(self, edge, *identifiers):
+        e = self.create_edge(self.head(edge), *identifiers)
+        self.delete_edge(edge)
+        return e
+
     def delete(self, identifier):
         if self.is_edge(identifier):
             self.delete_edge(identifier)
