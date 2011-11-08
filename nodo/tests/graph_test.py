@@ -48,6 +48,18 @@ class AbstractGraphTest(object):
     def tearDown(self):
         self.delete_graph(self.graph)
 
+    def create_empty_graph(self):
+        """\
+        Returns a new empty, modifiable `IGraph` instance.
+        """
+        raise NotImplementedError()
+
+    def delete_graph(self, graph):
+        """\
+        Deletes a graph.
+        """
+        raise NotImplementedError()
+
     def test_kind_vertex(self):
         g = self.graph
         v = g.create_vertex()
@@ -328,6 +340,8 @@ class AbstractGraphTest(object):
         g2e = g.create_edge(g2v1, g2v2)
         self.assert_(g2e in g2.outgoing_edges(g2v1))
         self.assert_(g2e in g2.ingoing_edges(g2v2))
+
+        self.delete_graph(g2)
 
     def test_edge_edges(self):
         g = self.graph
