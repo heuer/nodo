@@ -173,11 +173,9 @@ class ImmutableGraph(BaseImmutableGraph):
             return consts.KIND_LITERAL
         return consts.KIND_VERTEX
 
-    @property
     def vertices(self):
         return self._conn.smembers(self._v_key)
 
-    @property
     def edges(self):
         return self._conn.smembers(self._e_key)
 

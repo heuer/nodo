@@ -86,14 +86,14 @@ class BaseImmutableGraph(object):
     def rank(self):
         card = self.card
         try:
-            return max((card(e) for e in self.edges))
+            return max((card(e) for e in self.edges()))
         except ValueError:
             return 0
 
     def corank(self):
         card = self.card
         try:
-            return min((card(e) for e in self.edges))
+            return min((card(e) for e in self.edges()))
         except ValueError:
             return 0
 
@@ -113,7 +113,7 @@ class BaseImmutableGraph(object):
 
     def is_uniform(self, k=None):
         card = self.card
-        for e in self.edges:
+        for e in self.edges():
             if not k:
                 k = card(e)
                 continue
@@ -132,13 +132,13 @@ class BaseImmutableGraph(object):
         return True
 
     def __contains__(self, identifier):
-        return identifier in chain(self.vertices, self.edges)
+        return identifier in chain(self.vertices(), self.edges())
 
     def __iter__(self):
-        return self.vertices
+        return self.vertices()
 
     def __len__(self):
-        return len(self.vertices)
+        return sum(1 for v in self.vertices())
 
 
 class BaseGraph(BaseImmutableGraph):

@@ -86,7 +86,7 @@ class AbstractGraphTest(object):
         v = g.create_vertex()
         self.assert_(v)
         self.assert_(v in g)
-        self.assert_(v in g.vertices)
+        self.assert_(v in g.vertices())
 
     def test_create_string_vertex(self):
         g = self.graph
@@ -95,7 +95,7 @@ class AbstractGraphTest(object):
         v1 = g.create_vertex(u'hello')
         self.assert_(v1)
         self.assert_(v1 in g)
-        self.assert_(v1 in g.vertices)
+        self.assert_(v1 in g.vertices())
         v2 = g.create_vertex(u'hello')
         self.assert_(v2)
         self.assert_(v1 == v2)
@@ -109,7 +109,7 @@ class AbstractGraphTest(object):
         v1 = g.create_integer_vertex(666)
         self.assert_(v1)
         self.assert_(v1 in g)
-        self.assert_(v1 in g.vertices)
+        self.assert_(v1 in g.vertices())
         v2 = g.create_integer_vertex(666)
         self.assert_(v2)
         self.assert_(v1 == v2)
@@ -124,13 +124,13 @@ class AbstractGraphTest(object):
         self.assert_(v2)
         self.assert_(v1 in g)
         self.assert_(v2 in g)
-        self.assert_(v1 in g.vertices)
-        self.assert_(v2 in g.vertices)
+        self.assert_(v1 in g.vertices())
+        self.assert_(v2 in g.vertices())
 
         e = g.create_edge(v1, v2)
         self.assert_(e)
         self.assert_(e in g)
-        self.assert_(e in g.edges)
+        self.assert_(e in g.edges())
 
     def test_rank_card(self):
         g = self.graph
@@ -396,59 +396,59 @@ class AbstractGraphTest(object):
         g = self.graph
         v = g.create_vertex()
         self.assert_(v in g)
-        self.assert_(v in g.vertices)
-        self.assert_((v,) == tuple(g.vertices))
+        self.assert_(v in g.vertices())
+        self.assert_((v,) == tuple(g.vertices()))
         g.delete_vertex(v)
         self.assert_(v not in g)
-        self.assert_(v not in g.vertices)
-        self.assert_(tuple() == tuple(g.vertices))
+        self.assert_(v not in g.vertices())
+        self.assert_(tuple() == tuple(g.vertices()))
 
     def test_delete_vertex2(self):
         g = self.graph
         v = g.create_vertex('Pumuckl')
         self.assert_(v in g)
-        self.assert_(v in g.vertices)
-        self.assert_((v,) == tuple(g.vertices))
+        self.assert_(v in g.vertices())
+        self.assert_((v,) == tuple(g.vertices()))
         g.delete_vertex(v)
         self.assert_(v not in g)
-        self.assert_(v not in g.vertices)
-        self.assert_(tuple() == tuple(g.vertices))
+        self.assert_(v not in g.vertices())
+        self.assert_(tuple() == tuple(g.vertices()))
 
     def test_delete_vertex3(self):
         g = self.graph
         v1, v2 = g.create_vertex(), g.create_vertex()
         self.assert_(v1 in g)
-        self.assert_(v1 in g.vertices)
+        self.assert_(v1 in g.vertices())
         self.assert_(v2 in g)
-        self.assert_(v2 in g.vertices)
+        self.assert_(v2 in g.vertices())
         e = g.create_edge(v1, v2)
         self.assert_(e in g)
         g.delete_vertex(v1)
         self.assert_(v1 not in g)
-        self.assert_(v1 not in g.vertices)
+        self.assert_(v1 not in g.vertices())
         self.assert_(e not in g)
 
     def test_delete_vertex4(self):
         g = self.graph
         v = g.create_vertex()
         self.assert_(v in g)
-        self.assert_(v in g.vertices)
-        self.assert_((v,) == tuple(g.vertices))
+        self.assert_(v in g.vertices())
+        self.assert_((v,) == tuple(g.vertices()))
         g.delete(v)
         self.assert_(v not in g)
-        self.assert_(v not in g.vertices)
-        self.assert_(tuple() == tuple(g.vertices))
+        self.assert_(v not in g.vertices())
+        self.assert_(tuple() == tuple(g.vertices()))
 
     def test_delete_vertex5(self):
         g = self.graph
         v = g.create_vertex()
         self.assert_(v in g)
-        self.assert_(v in g.vertices)
-        self.assert_((v,) == tuple(g.vertices))
+        self.assert_(v in g.vertices())
+        self.assert_((v,) == tuple(g.vertices()))
         del g[v]
         self.assert_(v not in g)
-        self.assert_(v not in g.vertices)
-        self.assert_(tuple() == tuple(g.vertices))
+        self.assert_(v not in g.vertices())
+        self.assert_(tuple() == tuple(g.vertices()))
 
     def test_add_tail(self):
         g = self.graph

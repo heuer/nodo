@@ -310,10 +310,18 @@ class IImmutableGraph(Interface):
         Returns the number of vertices.
         """
 
+    def vertices():
+        """\
+        Returns an iterable over all vertix identifiers.
+        """
+
+    def edges():
+        """\
+        Returns an iterable over all edge identifiers.
+        """
+
     identifier = Attribute("""\
 Returns the unique (within a `IImmutableGraphspace`) graph identifier.""")
-    vertices = Attribute("""Returns an iterable over all vertix identifiers""")
-    edges = Attribute("""Returns an iterable over all edge identifiers""")
 
 
 class IGraph(IImmutableGraph):
