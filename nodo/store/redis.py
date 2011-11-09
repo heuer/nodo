@@ -156,6 +156,12 @@ class ImmutableGraph(BaseImmutableGraph):
     def card(self, edge):
         return self._conn.zcount(edge, 0, 1)
 
+    def indegree(self, identifier):
+        return self._conn.scard('%s:ie' % identifier)
+
+    def outdegree(self, identifier):
+        return self._conn.scard('%s:oe' % identifier)
+
     def edge_incidents(self, edge):
         return self._conn.zrange(edge, 0, -1)
 
