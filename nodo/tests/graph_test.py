@@ -435,6 +435,26 @@ class AbstractGraphTest(object):
         self.assert_(v not in g.vertices)
         self.assert_(tuple() == tuple(g.vertices))
 
+    def test_add_tail(self):
+        g = self.graph
+        v1, v2, v3 = g.create_vertex(), g.create_vertex(), g.create_vertex()
+        e = g.create_edge(v1, v2)
+        self.assert_(v2 in g.tail(e))
+        self.assert_(v3 not in g.tail(e))
+        g.add_tail(e, v3)
+        self.assert_(v2 in g.tail(e))
+        self.assert_(v3 in g.tail(e))
+
+    def test_remove_tail(self):
+        g = self.graph
+        v1, v2, v3 = g.create_vertex(), g.create_vertex(), g.create_vertex()
+        e = g.create_edge(v1, v2, v3)
+        self.assert_(v2 in g.tail(e))
+        self.assert_(v3 in g.tail(e))
+        g.remove_tail(e, v3)
+        self.assert_(v2 in g.tail(e))
+        self.assert_(v3 not in g.tail(e))
+
     def test_replace_tail(self):
         g = self.graph
         v1, v2, v3 = g.create_vertex(), g.create_vertex(), g.create_vertex()
