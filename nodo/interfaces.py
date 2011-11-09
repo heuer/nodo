@@ -257,9 +257,27 @@ class IImmutableGraph(Interface):
             An edge identifier.
         """
 
+    def indegree(identifier):
+        """\
+        Returns the number of ingoing edges (where the `identifier` is contained
+        in the tail of an edge).
+
+        `identifier`
+            A vertex or edge identifier.
+        """
+
+    def outdegree(identifier):
+        """\
+        Returns the number of outgoing edges (where the `identifier` is the
+        head of an edge).
+
+        `identifier`
+            A vertex identifier.
+        """
+
     def degree(identifier):
         """\
-        Returns the number of ingoing edges.
+        Returns the number of edges which touch the `identifier`.
 
         `identifier`
             A vertex or edge identifier.

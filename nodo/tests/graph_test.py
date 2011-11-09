@@ -38,6 +38,7 @@ Abstract graph tests.
 :organization: Semagia - http://www.semagia.com/
 :license:      BSD License
 """
+from nose.tools import ok_, eq_, raises
 from nodo import constants, XSD
 
 class AbstractGraphTest(object):
@@ -145,18 +146,18 @@ class AbstractGraphTest(object):
         self.assert_(3 == g.rank())
         self.assert_(2 == g.corank())
 
-    def test_degree(self):
+    def test_indegree(self):
         g = self.graph
         v1, v2, v3 = g.create_vertex(), g.create_vertex(), g.create_vertex()
-        self.assert_(0 == g.degree(v1))
-        self.assert_(0 == g.degree(v2))
-        self.assert_(0 == g.degree(v3))
+        self.assert_(0 == g.indegree(v1))
+        self.assert_(0 == g.indegree(v2))
+        self.assert_(0 == g.indegree(v3))
         e1 = g.create_edge(v1, v2)
-        self.assert_(0 == g.degree(v1))
-        self.assert_(1 == g.degree(v2))
+        self.assert_(0 == g.indegree(v1))
+        self.assert_(1 == g.indegree(v2))
         e2 = g.create_edge(v1, v2, v3)
-        self.assert_(2 == g.degree(v2))
-        self.assert_(1 == g.degree(v3))
+        self.assert_(2 == g.indegree(v2))
+        self.assert_(1 == g.indegree(v3))
 
     def test_edge_incidents(self):
         g = self.graph
@@ -493,6 +494,11 @@ class AbstractGraphTest(object):
         g = self.graph
         v = g.create_vertex()
         e = g.create_edge(v, v)
+        eq_(1, g.indegree(v))
+        eq_(1, g.outdegree(v))
+        eq_(2, g.degree(v))
+        ok_(e in g.ingoing_edges(v))
+        ok_(e in g.outgoing_edges(v))
         self.assert_(1 == g.card(e))
         self.assert_(v == g.head(e))
         self.assert_((v,) == tuple(g.tail(e)))

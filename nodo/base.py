@@ -101,8 +101,14 @@ class BaseImmutableGraph(object):
         s.add(self.head(edge))
         return len(s)
 
-    def degree(self, vertex):
-        return sum(1 for e in self.ingoing_edges(vertex))
+    def indegree(self, identifier):
+        return sum(1 for e in self.ingoing_edges(identifier))
+
+    def outdegree(self, identifier):
+        return sum(1 for e in self.outgoing_edges(identifier))
+
+    def degree(self, identifier):
+        return self.indegree(identifier) + self.outdegree(identifier)
 
     def is_uniform(self, k=None):
         card = self.card
