@@ -97,7 +97,9 @@ class BaseImmutableGraph(object):
             return 0
 
     def card(self, edge):
-        return len(self.tail(edge)) + 1
+        s = set(self.tail(edge))
+        s.add(self.head(edge))
+        return len(s)
 
     def degree(self, vertex):
         return sum(1 for e in self.ingoing_edges(vertex))

@@ -445,3 +445,11 @@ class AbstractGraphTest(object):
         self.assert_(v1 == g.head(e))
         self.assert_((v3,) == tuple(g.tail(e)))
 
+    def test_loop(self):
+        g = self.graph
+        v = g.create_vertex()
+        e = g.create_edge(v, v)
+        self.assert_(1 == g.card(e))
+        self.assert_(v == g.head(e))
+        self.assert_((v,) == tuple(g.tail(e)))
+
