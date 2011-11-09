@@ -2,5 +2,6 @@
 Nodo - Hypergraph
 =================
 
-Nodo provides a `Hypergraph <http://en.wikipedia.org/wiki/Hypergraph>`_ 
-implementation.
+Nodo provides a Hypergraph [1] implementation.
+
+[1] <http://en.wikipedia.org/wiki/Hypergraph>
