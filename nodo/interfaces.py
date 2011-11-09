@@ -122,7 +122,7 @@ class IImmutableGraph(Interface):
 
     def edge_targets(edge):
         """\
-        Returns an iterable which contains the head head and tail of an edge.
+        Returns an iterable which contains the head and tail of an edge.
 
         This method is returns a result equivalent to::
 
