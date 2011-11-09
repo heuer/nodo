@@ -114,11 +114,11 @@ class BaseImmutableGraph(object):
                 return False
         return True
 
-    def edge_targets(self, edge):
+    def edge_incidents(self, edge):
         return set(chain([self.head(edge)], self.tail(edge)))
 
     def edge_contains(self, edge, *identifiers):
-        s = set(self.edge_targets(edge))
+        s = set(self.edge_incidents(edge))
         for ident in identifiers:
             if not ident in s:
                 return False

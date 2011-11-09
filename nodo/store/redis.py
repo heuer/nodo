@@ -156,7 +156,7 @@ class ImmutableGraph(BaseImmutableGraph):
     def card(self, edge):
         return self._conn.zcount(edge, 0, 1)
 
-    def edge_targets(self, edge):
+    def edge_incidents(self, edge):
         return self._conn.zrange(edge, 0, -1)
 
     def kind(self, identifier):

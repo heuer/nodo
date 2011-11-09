@@ -158,13 +158,13 @@ class AbstractGraphTest(object):
         self.assert_(2 == g.degree(v2))
         self.assert_(1 == g.degree(v3))
 
-    def test_edge_targets(self):
+    def test_edge_incidents(self):
         g = self.graph
         v1, v2, v3 = g.create_vertex(), g.create_vertex(), g.create_vertex()
         edge = g.create_edge(v1, v2)
-        self.assert_(v1 in g.edge_targets(edge))
-        self.assert_(v2 in g.edge_targets(edge))
-        self.assert_(v3 not in g.edge_targets(edge))
+        self.assert_(v1 in g.edge_incidents(edge))
+        self.assert_(v2 in g.edge_incidents(edge))
+        self.assert_(v3 not in g.edge_incidents(edge))
 
     def test_edge_contains(self):
         g = self.graph

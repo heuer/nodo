@@ -108,6 +108,11 @@ class IImmutableGraph(Interface):
         """\
         Returns the head (a vertex or an edge) of the provided `edge`.
 
+        .. note::
+
+            Although differnt defintions of head exist in graph theory, this
+            implementation denotes the source of an edge as head.
+
         `edge`
             An edge identifier.
         """
@@ -116,11 +121,16 @@ class IImmutableGraph(Interface):
         """\
         Returns the tail (an iterable of vertices or edges) of an edge.
 
+        .. note::
+
+            Although differnt defintions of tail exist in graph theory, this
+            implementation denotes the target(s) of an edge as tail.
+
         `edge`
             An edge identifier.
         """
 
-    def edge_targets(edge):
+    def edge_incidents(edge):
         """\
         Returns an iterable which contains the head and tail of an edge.
 
@@ -129,7 +139,7 @@ class IImmutableGraph(Interface):
             set(chain([graph.head(edge)], graph.tail(edge)))
 
         `edges`
-            Edge identifier.
+            An edge identifier.
         """
 
     def edge_contains(edge, *identifier):
