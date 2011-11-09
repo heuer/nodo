@@ -159,6 +159,20 @@ class AbstractGraphTest(object):
         self.assert_(2 == g.indegree(v2))
         self.assert_(1 == g.indegree(v3))
 
+    def test_outdegree(self):
+        g = self.graph
+        v1, v2, v3 = g.create_vertex(), g.create_vertex(), g.create_vertex()
+        self.assert_(0 == g.outdegree(v1))
+        self.assert_(0 == g.outdegree(v2))
+        self.assert_(0 == g.outdegree(v3))
+        e1 = g.create_edge(v1, v2)
+        self.assert_(1 == g.outdegree(v1))
+        self.assert_(0 == g.outdegree(v2))
+        e2 = g.create_edge(v1, v2, v3)
+        self.assert_(2 == g.outdegree(v1))
+        self.assert_(0 == g.outdegree(v2))
+        self.assert_(0 == g.outdegree(v3))
+
     def test_edge_incidents(self):
         g = self.graph
         v1, v2, v3 = g.create_vertex(), g.create_vertex(), g.create_vertex()
