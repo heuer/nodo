@@ -38,8 +38,3 @@ Graph.
 :organization: Semagia - http://www.semagia.com/
 :license:      BSD License
 """
-def connect():
-    """\
-
-    """
-

@@ -39,6 +39,7 @@ module.
 :organization: Semagia - http://www.semagia.com/
 :license:      BSD License
 """
+from __future__ import absolute_import
 from itertools import chain
 from . import XSD, constants as consts
 from .interfaces import IImmutableGraph, IGraph, IConnection, implements
