@@ -115,7 +115,7 @@ class BaseImmutableGraph(object):
         return True
 
     def edge_targets(self, edge):
-        return chain([self.head(edge)], self.tail(edge))
+        return set(chain([self.head(edge)], self.tail(edge)))
 
     def edge_contains(self, edge, *identifiers):
         s = set(self.edge_targets(edge))
