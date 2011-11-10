@@ -55,14 +55,15 @@ def to_nx(graph):
     """
     def edges():
         for edge in graph.edges():
-            src, target = tuple(graph.edge_incidents(edge))
+            incidents = tuple(graph.edge_incidents(edge))
+            if not len(incidents) == 2:
+                raise ValueError('The provided graph is not a 2-uniform graph')
+            src, target = incidents
             if graph.is_literal(src):
                 src = graph.literal(src)
             if graph.is_literal(target):
                 target = graph.literal(target)
             yield src, target
-    if not graph.is_uniform(2):
-        raise ValueError('The provided graph is not a 2-uniform graph')
     g = nx.DiGraph()
     g.add_edges_from(edges())
     return g
