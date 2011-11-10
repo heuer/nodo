@@ -266,7 +266,7 @@ class Graph(ImmutableGraph, BaseGraph):
             add('%s:oe' % e)
             add('%s:ie' % e)
         pipe = self._conn.pipeline()
-        pipe.delete(elements) \
+        pipe.delete(*elements) \
             .delete(self._v_key, self._e_key) \
             .execute()
 
