@@ -163,7 +163,7 @@ class ImmutableGraph(BaseImmutableGraph):
         return self._conn.zrange(edge, 0, -1)
 
     def kind(self, identifier):
-        return _PREFIX2KIND.get(identifier[:2], consts.KIND_UNKNOWN)
+        return _kind(identifier)
 
     def vertices(self):
         return self._conn.smembers(self._v_key)
@@ -202,8 +202,7 @@ class Graph(ImmutableGraph, BaseGraph):
         return lid
 
     def create_edge(self, head, *tail):
-        if not self.is_vertex(head):
-            raise TypeError('The head must be a vertex, got: %s' % consts.kind_name(self.kind(head)))
+        _assert_vertex(head)
         d = {head: 0}
         for i in tail:
             if not i:
@@ -234,6 +233,7 @@ class Graph(ImmutableGraph, BaseGraph):
         self._conn.zrem(edge, *identifiers)
 
     def delete_vertex(self, vertex):
+        _assert_vertex(vertex)
         outgoing, ingoing = '%s:oe' % vertex, '%s:ie' % vertex
         edges = tuple(self._conn.sunion(ingoing, outgoing))
         for edge in edges:
@@ -244,8 +244,8 @@ class Graph(ImmutableGraph, BaseGraph):
             .execute()
 
     def delete_edge(self, edge):
-        conn = self._conn
-        targets = conn.zrange(edge, 0, -1)
+        _assert_edge(edge)
+        targets = self.edge_incidents(edge)
         if not targets:
             return
         pipe = self._conn.pipeline()
@@ -269,6 +269,20 @@ class Graph(ImmutableGraph, BaseGraph):
         pipe.delete(elements) \
             .delete(self._v_key, self._e_key) \
             .execute()
+
+def _assert_edge(identifier):
+    if _kind(identifier) != consts.KIND_EDGE:
+        raise TypeError('Expected an edge identifier, got "%s"' % _kind_name(identifier))
+
+def _assert_vertex(identifier):
+    if _kind(identifier) not in (consts.KIND_VERTEX, consts.KIND_LITERAL):
+        raise TypeError('Expected a vertex identifier, got "%s"' % _kind_name(identifier))
+
+def _kind_name(identifier):
+    return consts.kind_name(_kind(identifier))
+
+def _kind(identifier):
+    return _PREFIX2KIND.get(identifier[:2], consts.KIND_UNKNOWN)
 
 def _create_id(redis_conn):
     return str(redis_conn.incr(_KEY_CONSTRUCT_COUNTER))
