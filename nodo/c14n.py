@@ -42,6 +42,7 @@ from __future__ import absolute_import
 import re
 from decimal import Decimal, InvalidOperation
 from . import XSD
+from ._urlutils import normalize as normalize_url
 
 def canonicalize(value, datatype):
     """\
@@ -204,6 +205,7 @@ _DATATYPE2NORMALIZER = {
     XSD.decimal: normalize_decimal,
     XSD.integer: normalize_integer,
     XSD.boolean: normalize_boolean,
+    XSD.anyURI: normalize_url,
 }
 
 if __name__ == '__main__':
