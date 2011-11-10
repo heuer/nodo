@@ -40,26 +40,9 @@ Abstract graph tests.
 """
 from nose.tools import ok_, eq_, raises
 from nodo import constants, XSD
+from abstract_test import AbstractTest
 
-class AbstractGraphTest(object):
-
-    def setUp(self):
-        self.graph = self.create_empty_graph()
-
-    def tearDown(self):
-        self.delete_graph(self.graph)
-
-    def create_empty_graph(self):
-        """\
-        Returns a new empty, modifiable `IGraph` instance.
-        """
-        raise NotImplementedError()
-
-    def delete_graph(self, graph):
-        """\
-        Deletes a graph.
-        """
-        raise NotImplementedError()
+class AbstractGraphTest(AbstractTest):
 
     def test_kind_vertex(self):
         g = self.graph
