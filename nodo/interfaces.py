@@ -110,8 +110,10 @@ class IImmutableGraph(Interface):
 
         .. note::
 
-            Although differnt defintions of head exist in graph theory, this
+            Although different defintions of head exist in graph theory, this
             implementation denotes the source of an edge as head.
+
+        See also :py:func:`IImmutableGraph.tail()`
 
         `edge`
             An edge identifier.
@@ -123,8 +125,10 @@ class IImmutableGraph(Interface):
 
         .. note::
 
-            Although differnt defintions of tail exist in graph theory, this
+            Although different defintions of tail exist in graph theory, this
             implementation denotes the target(s) of an edge as tail.
+
+        See also :py:func:`IImmutableGraph.head()`
 
         `edge`
             An edge identifier.
