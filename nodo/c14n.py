@@ -64,7 +64,7 @@ def canonicalize(value, datatype):
     """
     normalizer = _DATATYPE2NORMALIZER.get(datatype)
     if normalizer:
-        return normalizer(value), datatype
+        return normalizer(unicode(value)), datatype
     return value, datatype
 
 
