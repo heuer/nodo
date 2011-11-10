@@ -86,9 +86,6 @@ class Connection(BaseConnection):
             return self._graph_class(self._conn, identifier)
         return default
 
-    def kind(self, identifier):
-        return _PREFIX2KIND.get(identifier[:2], consts.KIND_UNKNOWN)
-
     def create_graph(self, identifier=None):
         if identifier and identifier in self.identifiers:
             raise KeyError()
@@ -99,8 +96,8 @@ class Connection(BaseConnection):
     def delete_graph(self, identifier):
         g = self.get(identifier)
         if g:
+            g.clear()
             self._conn.srem(_KEY_GRAPHS, identifier)
-            g._delete()
 
     @property
     def identifiers(self):
@@ -166,12 +163,7 @@ class ImmutableGraph(BaseImmutableGraph):
         return self._conn.zrange(edge, 0, -1)
 
     def kind(self, identifier):
-        prefix = identifier[:2]
-        if prefix == u'e:':
-            return consts.KIND_EDGE
-        elif prefix == u'l:':
-            return consts.KIND_LITERAL
-        return consts.KIND_VERTEX
+        return _PREFIX2KIND.get(identifier[:2], consts.KIND_UNKNOWN)
 
     def vertices(self):
         return self._conn.smembers(self._v_key)
@@ -196,7 +188,7 @@ class Graph(ImmutableGraph, BaseGraph):
     def create_vertex(self, value=None, datatype=None):
         if value:
             return self._create_literal_vertex(value, datatype or XSD.string)
-        ident = _create_id(self._conn)
+        ident = 'v:%s' % _create_id(self._conn)
         self._conn.sadd(self._v_key, ident)
         return ident
 
@@ -211,7 +203,7 @@ class Graph(ImmutableGraph, BaseGraph):
 
     def create_edge(self, head, *tail):
         if not self.is_vertex(head):
-            raise TypeError('The head must be a vertex')
+            raise TypeError('The head must be a vertex, got: %s' % consts.kind_name(self.kind(head)))
         d = {head: 0}
         for i in tail:
             if not i:
@@ -237,6 +229,8 @@ class Graph(ImmutableGraph, BaseGraph):
         self._conn.zadd(edge, **d)
 
     def remove_tail(self, edge, *identifiers):
+        if self.head(edge) in identifiers:
+            raise ValueError("The edge's head isn't removable")
         self._conn.zrem(edge, *identifiers)
 
     def delete_vertex(self, vertex):
@@ -263,15 +257,18 @@ class Graph(ImmutableGraph, BaseGraph):
         pipe.delete(edge) \
             .execute()
 
-    def _delete(self):
+    def clear(self):
         conn = self._conn
-        v_key, e_key = self._v_key, self._e_key
+        elements = []
+        add = elements.append
+        for e in conn.sunion(self._v_key, self._e_key):
+            add(e)
+            add('%s:oe' % e)
+            add('%s:ie' % e)
         pipe = self._conn.pipeline()
-        pipe.delete(conn.smembers(v_key)) \
-            .delete(conn.smembers(e_key)) \
-            .delete(e_key, v_key) \
+        pipe.delete(elements) \
+            .delete(self._v_key, self._e_key) \
             .execute()
-
 
 def _create_id(redis_conn):
     return str(redis_conn.incr(_KEY_CONSTRUCT_COUNTER))

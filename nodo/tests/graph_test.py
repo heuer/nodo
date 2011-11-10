@@ -237,8 +237,32 @@ class AbstractGraphTest(object):
         self.assert_(not g.is_neighbour(v1, v2))
         g.create_edge(v1, v2)
         self.assert_(g.is_neighbour(v1, v2))
+        self.assert_(g.is_neighbour(v2, v1))
         self.assert_(v1 in g.neighbours(v2))
         self.assert_(v2 in g.neighbours(v1))
+
+    def test_neighbour2(self):
+        g = self.graph
+        v1, v2, v3 = g.create_vertex(), g.create_vertex(), g.create_vertex()
+        ok_(not g.is_neighbour(v1, v2))
+        ok_(not g.is_neighbour(v1, v3))
+        ok_(not g.is_neighbour(v2, v3))
+        ok_(not g.is_neighbour(v2, v1))
+        g.create_edge(v1, v2, v3)
+        ok_(g.is_neighbour(v1, v2))
+        ok_(g.is_neighbour(v2, v1))
+        ok_(g.is_neighbour(v3, v1))
+        ok_(g.is_neighbour(v1, v3))
+        ok_(not g.is_neighbour(v1, v1))
+        ok_(v1 not in g.neighbours(v1))
+        ok_(v2 in g.neighbours(v1))
+        ok_(v3 in g.neighbours(v1))
+        ok_(v1 in g.neighbours(v2))
+        ok_(v2 not in g.neighbours(v2))
+        ok_(v3 not in g.neighbours(v2))
+        ok_(v1 in g.neighbours(v3))
+        ok_(v2 not in g.neighbours(v3))
+        ok_(v3 not in g.neighbours(v3))
 
     def test_predecessors(self):
         g = self.graph
@@ -494,6 +518,32 @@ class AbstractGraphTest(object):
         self.assert_(v3 not in g.tail(e))
         self.assert_(v4 not in g.tail(e))
 
+    def test_remove_tail3(self):
+        g = self.graph
+        v1, v2, v3, v4 = g.create_vertex(), g.create_vertex(), g.create_vertex(), g.create_vertex()
+        e = g.create_edge(v1, v2, v3, v4)
+        self.assert_(v2 in g.tail(e))
+        self.assert_(v3 in g.tail(e))
+        self.assert_(v4 in g.tail(e))
+        try:
+            g.remove_tail(e, v1)
+            self.fail("Expected a ValueError for removing the edge's head")
+        except ValueError:
+            pass
+
+    def test_remove_tail4(self):
+        g = self.graph
+        v1, v2, v3, v4 = g.create_vertex(), g.create_vertex(), g.create_vertex(), g.create_vertex()
+        e = g.create_edge(v1, v2, v3, v4)
+        self.assert_(v2 in g.tail(e))
+        self.assert_(v3 in g.tail(e))
+        self.assert_(v4 in g.tail(e))
+        try:
+            g.remove_tail(e, v2, v1)
+            self.fail("Expected a ValueError for removing the edge's head")
+        except ValueError:
+            pass
+
     def test_replace_tail(self):
         g = self.graph
         v1, v2, v3 = g.create_vertex(), g.create_vertex(), g.create_vertex()
@@ -513,7 +563,30 @@ class AbstractGraphTest(object):
         eq_(2, g.degree(v))
         ok_(e in g.ingoing_edges(v))
         ok_(e in g.outgoing_edges(v))
-        self.assert_(1 == g.card(e))
-        self.assert_(v == g.head(e))
-        self.assert_((v,) == tuple(g.tail(e)))
+        ok_(1 == g.card(e))
+        ok_(v == g.head(e))
+        ok_((v,) == tuple(g.tail(e)))
+        ok_(v in g.predecessors(v))
+        ok_(v in g.successors(v))
+        ok_(v in g.neighbours(v))
+        ok_(g.is_neighbour(v, v))
 
+    def test_clear(self):
+        g = self.graph
+        v1, v2, v3 = g.create_vertex(), g.create_vertex(), g.create_vertex()
+        e1 = g.create_edge(v1, v2)
+        e2 = g.create_edge(v1, v3)
+        e3 = g.create_edge(v1, v2, v3)
+        ok_(v1 in g)
+        ok_(v2 in g)
+        ok_(v3 in g)
+        ok_(e1 in g)
+        ok_(e2 in g)
+        ok_(e3 in g)
+        g.clear()
+        ok_(v1 not in g)
+        ok_(v2 not in g)
+        ok_(v3 not in g)
+        ok_(e1 not in g)
+        ok_(e2 not in g)
+        ok_(e3 not in g)

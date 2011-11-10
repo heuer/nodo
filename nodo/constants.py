@@ -47,6 +47,15 @@ KIND_VERTEX = 1
 KIND_EDGE = 2
 KIND_LITERAL = 3
 
+_KIND2NAME = {
+    KIND_VERTEX: u'vertex',
+    KIND_EDGE: u'edge',
+    KIND_LITERAL: u'literal vertex',
+}
+
+def kind_name(i):
+    return _KIND2NAME.get(i, u'unknown')
+
 _tmp = sorted([getattr(XSD, i) for i in dir(XSD) if i[0] != u'_' and i != u'XSD'])
 
 XSDID2URI = dict(zip(count(1), _tmp))

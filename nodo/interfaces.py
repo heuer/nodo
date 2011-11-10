@@ -320,6 +320,11 @@ class IImmutableGraph(Interface):
         Returns an iterable over all edge identifiers.
         """
 
+    def clear():
+        """\
+        Removes all vertices and edges from this graph.
+        """
+
     identifier = Attribute("""\
 Returns the unique (within a `IImmutableGraphspace`) graph identifier.""")
 

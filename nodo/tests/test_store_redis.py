@@ -32,7 +32,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 """\
-Graph stores.
+Tests against the Redis store.
 
 :author:       Lars Heuer (heuer[at]semagia.com)
 :organization: Semagia - http://www.semagia.com/
@@ -51,5 +51,3 @@ class TestRedisGraph(AbstractGraphTest, TestCase):
 
     def delete_graph(self, graph):
         self.conn.delete_graph(graph.identifier)
-
-
