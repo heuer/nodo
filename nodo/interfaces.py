@@ -106,7 +106,7 @@ class IImmutableGraph(Interface):
 
     def head(edge):
         """\
-        Returns the head (a vertex or an edge) of the provided `edge`.
+        Returns the head (a vertex) of the provided `edge`.
 
         .. note::
 
@@ -383,9 +383,9 @@ class IGraph(IImmutableGraph):
         the edge identifier.
 
         `head`
-            A vertex identifier.
+            A vertex identifier which becomes the source of the edge.
         `tail`
-            An iterable of targets.
+            An iterable of targets which become the target of the edge.
         """
 
     def add_tail(edge, *identifiers):
