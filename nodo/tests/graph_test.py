@@ -104,6 +104,20 @@ class AbstractGraphTest(object):
 
     def test_create_integer_vertex(self):
         g = self.graph
+        v1 = g.find_integer_vertex(1)
+        self.assert_(not v1)
+        v1 = g.create_integer_vertex(1)
+        self.assert_(v1)
+        self.assert_(v1 in g)
+        self.assert_(v1 in g.vertices())
+        v2 = g.create_integer_vertex(1)
+        self.assert_(v2)
+        self.assert_(v1 == v2)
+        self.assert_(v1 == g.find_integer_vertex(1))
+        self.assert_(g.literal(v1) == (str(1), XSD.integer))
+
+    def test_create_integer_vertex2(self):
+        g = self.graph
         v1 = g.find_integer_vertex(666)
         self.assert_(not v1)
         v1 = g.create_integer_vertex(666)
