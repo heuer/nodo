@@ -40,7 +40,7 @@ Tests against the Redis store.
 """
 from unittest import TestCase
 from graph_test import AbstractGraphTest
-from nodo.store.redis import Connection
+from nodo.store.redis import RedisConnection as Connection
 
 class TestRedisGraph(AbstractGraphTest, TestCase):
 

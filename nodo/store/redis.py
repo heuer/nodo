@@ -62,10 +62,10 @@ def connect():
     """\
 
     """
-    return Connection(redis.Redis())
+    return RedisConnection(redis.Redis())
 
 
-class Connection(BaseConnection):
+class RedisConnection(BaseConnection):
     """\
 
     """
@@ -79,7 +79,7 @@ class Connection(BaseConnection):
         """
         self._conn = connection or redis.Redis()
         self._readonly = readonly
-        self._graph_class = Graph if not readonly else ImmutableGraph
+        self._graph_class = RedisGraph if not readonly else RedisImmutableGraph
 
     def get(self, identifier, default=None):
         if self._conn.sismember(_KEY_GRAPHS, identifier):
@@ -104,7 +104,7 @@ class Connection(BaseConnection):
         return self._conn.smembers(_KEY_GRAPHS)
 
 
-class ImmutableGraph(BaseImmutableGraph):
+class RedisImmutableGraph(BaseImmutableGraph):
     """\
 
     """
@@ -176,14 +176,14 @@ class ImmutableGraph(BaseImmutableGraph):
         return self._identifier
 
 
-class Graph(ImmutableGraph, BaseGraph):
+class RedisGraph(RedisImmutableGraph, BaseGraph):
     """\
 
     """
     implements(IGraph)
 
     def __init__(self, connection, identifier):
-        super(Graph, self).__init__(connection, identifier)
+        super(RedisGraph, self).__init__(connection, identifier)
 
     def create_vertex(self, value=None, datatype=None):
         if value:
