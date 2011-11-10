@@ -60,4 +60,12 @@ class AbstractFunctionalTest(AbstractTest):
         v1, v2 = g.create_vertex(), g.create_vertex()
         e = g.create_edge(v1, v2)
         ok_(f.is_neighbour(g, v1, v2))
-        
+
+    def test_neighbours(self):
+        g = self.graph
+        v1, v2, v3 = g.create_vertex(), g.create_vertex(), g.create_vertex()
+        e = g.create_edge(v1, v2)
+        ok_(v1 in f.neighbours(g, v2))
+        ok_(v2 in f.neighbours(g, v1))
+        ok_(v3 not in f.neighbours(g, v1))
+        ok_(v3 not in f.neighbours(g, v2)) 

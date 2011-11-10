@@ -64,3 +64,12 @@ def is_neighbour(g, a, b):
         The graph.
     """
     return g.is_neighbour(a, b)
+
+def neighbours(g, *identifiers):
+    """\
+    Returns the neighbours of `identifiers`.
+
+    `g`
+        The graph.
+    """
+    return g.neighbours(identifiers)
