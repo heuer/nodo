@@ -217,6 +217,9 @@ class IImmutableGraph(Interface):
         The kind is either `constants.KIND_VERTEX`, `constants.KIND_EDGE`,
         or `constants.KIND_LITERAL`. If the identifier is unknown, this
         method returns `constants.KIND_UNKNOWN`.
+
+        `identifier`
+            An edge or vertex identifier.
         """
 
     def is_edge(identifier):
