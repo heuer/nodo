@@ -56,6 +56,18 @@ def edges(g):
     """
     return g.edges()
 
+def kind(g, identifier):
+    return g.kind(identifier)
+
+def is_vertex(g, identifier):
+    return g.is_vertex(identifier)
+
+def is_edge(g, identifier):
+    return g.is_edge(identifier)
+
+def is_literal(g, identifier):
+    return g.is_literal(identifier)
+
 def is_neighbour(g, a, b):
     """\
     Returns if `a` is a neighbour of `b` within `g`.

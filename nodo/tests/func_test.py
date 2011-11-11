@@ -68,4 +68,28 @@ class AbstractFunctionalTest(AbstractTest):
         ok_(v1 in f.neighbours(g, v2))
         ok_(v2 in f.neighbours(g, v1))
         ok_(v3 not in f.neighbours(g, v1))
-        ok_(v3 not in f.neighbours(g, v2)) 
+        ok_(v3 not in f.neighbours(g, v2))
+
+    def test_is_vertex(self):
+        g = self.graph
+        ok_(f.is_vertex(g, g.create_vertex()))
+        ok_(f.is_vertex(g, g.create_vertex('Pumuckl')))
+        ok_(f.is_vertex(g, g.create_vertex(1)))
+        ok_(f.is_vertex(g, g.create_vertex(1, XSD.decimal)))
+        ok_(not f.is_vertex(g, g.create_edge(g.create_vertex(), g.create_vertex())))
+
+    def test_is_edge(self):
+        g = self.graph
+        ok_(not f.is_edge(g, g.create_vertex()))
+        ok_(not f.is_edge(g, g.create_vertex('Pumuckl')))
+        ok_(not f.is_edge(g, g.create_vertex(1)))
+        ok_(not f.is_edge(g, g.create_vertex(1, XSD.decimal)))
+        ok_(f.is_edge(g, g.create_edge(g.create_vertex(), g.create_vertex())))
+
+    def test_is_literal(self):
+        g = self.graph
+        ok_(not f.is_literal(g, g.create_vertex()))
+        ok_(f.is_literal(g, g.create_vertex('Pumuckl')))
+        ok_(f.is_literal(g, g.create_vertex(1)))
+        ok_(f.is_literal(g, g.create_vertex(1, XSD.decimal)))
+        ok_(not f.is_literal(g, g.create_edge(g.create_vertex(), g.create_vertex())))
