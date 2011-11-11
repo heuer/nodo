@@ -104,6 +104,19 @@ class IImmutableGraph(Interface):
             A (literal) vertex identifier.
         """
 
+    def datatype(identifier):
+        """\
+        Returns the datatype part (an IRI) of a literal vertex.
+
+        Does the same as::
+
+            lit = graph.literal(identifier)
+            datatype = None if lit is None else lit[1]
+
+        `identifier`
+            A (literal) vertex identifier.
+        """
+
     def head(edge):
         """\
         Returns the head (a vertex) of the provided `edge`.

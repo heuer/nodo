@@ -74,6 +74,10 @@ class BaseImmutableGraph(object):
         lit = self.literal(identifier)
         return lit[0] if lit else None
 
+    def datatype(self, identifier):
+        lit = self.literal(identifier)
+        return lit[1] if lit else None
+
     def predecessors(self, *identifiers):
         head = self.head
         return (head(edge) for edge in self.ingoing_edges(*identifiers))
