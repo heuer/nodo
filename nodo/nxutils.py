@@ -59,11 +59,7 @@ def to_nx(graph):
             if not len(incidents) == 2:
                 raise ValueError('The provided graph is not a 2-uniform graph')
             src, target = incidents
-            if graph.is_literal(src):
-                src = graph.literal(src)
-            if graph.is_literal(target):
-                target = graph.literal(target)
-            yield src, target
+            yield graph.literal(src) or src, graph.literal(target) or target
     g = nx.DiGraph()
     g.add_edges_from(edges())
     return g
