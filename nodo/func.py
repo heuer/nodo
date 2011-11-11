@@ -68,6 +68,15 @@ def is_edge(g, identifier):
 def is_literal(g, identifier):
     return g.is_literal(identifier)
 
+def literal(g, identifier):
+    return g.literal(identifier)
+
+def value(g, identifier):
+    return g.value(identifier)
+
+def datatype(g, identifier):
+    return g.datatype(identifier)
+
 def is_neighbour(g, a, b):
     """\
     Returns if `a` is a neighbour of `b` within `g`.
