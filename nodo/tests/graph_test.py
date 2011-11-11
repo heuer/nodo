@@ -413,6 +413,17 @@ class AbstractGraphTest(AbstractTest):
         v = g.create_vertex()
         self.assert_(None is g.value(v))
 
+    def test_datatype(self):
+        g = self.graph
+        value = u'Pumuckl'
+        v = g.create_vertex(value)
+        self.assert_(XSD.string == g.datatype(v))
+
+    def test_datatype2(self):
+        g = self.graph
+        v = g.create_vertex()
+        self.assert_(None is g.datatype(v))
+
     def test_delete_vertex(self):
         g = self.graph
         v = g.create_vertex()
