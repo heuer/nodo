@@ -175,6 +175,29 @@ class IImmutableGraph(Interface):
                     
         """
 
+    def edge_between(head, tail):
+        """\
+        Returns an edge between the provided `head` and `tail`.
+
+        If multiple edges between `head` and `tail` exist, a random edge
+        is returned.
+
+        If no edge between `head` and `tail` exists, ``None`` is returned.
+
+        .. note::
+            This method honours the direction of an edge::
+
+                v1, v2 = g.create_vertex(), g.create_vertex()
+                e = g.create_edge(v1, v2)
+                assert e == g.edge_between(v1, v2)
+                assert not g.edge_between(v2, v1)
+
+        `head`
+            A vertex identifier
+        `tail`
+            An edge or vertex identifier.
+        """
+
     def outgoing_edges(*identifier):
         """\
         Returns an iterable over all outgoing edges of `identifiers`.
@@ -345,8 +368,7 @@ class IImmutableGraph(Interface):
         Removes all vertices and edges from this graph.
         """
 
-    identifier = Attribute("""\
-Returns the unique (within a `IImmutableGraphspace`) graph identifier.""")
+    identifier = Attribute("""Returns the unique graph identifier.""")
 
 
 class IGraph(IImmutableGraph):

@@ -598,3 +598,12 @@ class AbstractGraphTest(AbstractTest):
         ok_(e1 not in g)
         ok_(e2 not in g)
         ok_(e3 not in g)
+
+    def test_edge_between(self):
+        g = self.graph
+        v1, v2, v3 = g.create_vertex(), g.create_vertex(), g.create_vertex()
+        e = g.create_edge(v1, v2)
+        ok_(e == g.edge_between(v1, v2))
+        ok_(g.edge_between(v2, v1) is None)
+        ok_(g.edge_between(v1, v3) is None)
+        ok_(g.edge_between(v3, v1) is None)

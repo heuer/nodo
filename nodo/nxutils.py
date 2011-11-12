@@ -54,12 +54,14 @@ def to_nx(graph):
         The Nodo graph to convert.
     """
     def edges():
+        edge_incidents = graph.edge_incidents
+        literal = graph.literal
         for edge in graph.edges():
-            incidents = tuple(graph.edge_incidents(edge))
+            incidents = tuple(edge_incidents(edge))
             if not len(incidents) == 2:
                 raise ValueError('The provided graph is not a 2-uniform graph')
             src, target = incidents
-            yield graph.literal(src) or src, graph.literal(target) or target
+            yield literal(src) or src, literal(target) or target
     g = nx.DiGraph()
     g.add_edges_from(edges())
     return g

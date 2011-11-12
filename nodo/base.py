@@ -135,6 +135,13 @@ class BaseImmutableGraph(object):
                 return False
         return True
 
+    def edge_between(self, head, tail):
+        edge_tail = self.tail
+        for edge in self.outgoing_edges(head):
+            if tail in edge_tail(edge):
+                return edge
+        return None
+
     def __contains__(self, identifier):
         return identifier in chain(self.vertices(), self.edges())
 
