@@ -167,6 +167,29 @@ class BaseGraph(BaseImmutableGraph):
         self.delete_edge(edge)
         return e
 
+    def merge_vertices(self, a, b):
+        a_lit, b_lit = self.is_literal(a), self.is_literal(b)
+        if a_lit and b_lit:
+            raise TypeError('Cannot merge two literal vertices')
+        e = self.edge_between(a, b)
+        while e:
+            self.delete_edge(e)
+            e = self.edge_between(a, b)
+        e = self.edge_between(b, a)
+        while e:
+            self.delete_edge(e)
+            e = self.edge_between(b, a)
+        for e in self.ingoing_edges(b):
+            tail = set(self.tail(e))
+            tail.remove(b)
+            tail.add(a)
+            self.create_edge(self.head(e), *tail)
+        for e in self.outgoing_edges(b):
+            tail = set(self.tail(e))
+            self.create_edge(a, *tail)
+        self.delete_vertex(b)
+        return a
+
     def delete(self, identifier):
         if self.is_edge(identifier):
             self.delete_edge(identifier)

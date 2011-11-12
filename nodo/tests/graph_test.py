@@ -635,13 +635,13 @@ class AbstractGraphTest(AbstractTest):
         e1 = g.create_edge(v1, v2)
         e2 = g.create_edge(v2, v3)
         e3 = g.create_edge(v4, v2)
-        ok_(4 == len(g))
+        eq_(4, len(g))
         vm = g.merge_vertices(v1, v2)
-        ok_(3 == len(g))
+        eq_(3, len(g))
         ok_(v3 in g.successors(vm))
         ok_(v4 in g.predecessors(vm))
-        ok_(1 == g.indegree(vm))
-        ok_(1 == g.outdegree(vm))
+        eq_(1, g.indegree(vm))
+        eq_(1, g.outdegree(vm))
         
     def test_merge_vertices3(self):
         g = self.graph
