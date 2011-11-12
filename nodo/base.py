@@ -171,6 +171,8 @@ class BaseGraph(BaseImmutableGraph):
         a_lit, b_lit = self.is_literal(a), self.is_literal(b)
         if a_lit and b_lit:
             raise TypeError('Cannot merge two literal vertices')
+        if b_lit:
+            a, b = b, a
         e = self.edge_between(a, b)
         while e:
             self.delete_edge(e)

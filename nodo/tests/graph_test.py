@@ -629,7 +629,7 @@ class AbstractGraphTest(AbstractTest):
         ok_(0 == g.indegree(v3))
         ok_(0 == g.outdegree(v3))
 
-    def test_merge_vertices(self):
+    def test_merge_vertices2(self):
         g = self.graph
         v1, v2, v3, v4 = g.create_vertex(), g.create_vertex(), g.create_vertex(), g.create_vertex()
         e1 = g.create_edge(v1, v2)
@@ -646,6 +646,15 @@ class AbstractGraphTest(AbstractTest):
     def test_merge_vertices3(self):
         g = self.graph
         v1, v2 = g.create_vertex(u'Hello'), g.create_vertex()
+        ok_(2 == len(g))
+        v3 = g.merge_vertices(v1, v2)
+        ok_(1 == len(g))
+        ok_(u'Hello' == g.value(v3))
+        ok_(XSD.string == g.datatype(v3))
+
+    def test_merge_vertices4(self):
+        g = self.graph
+        v1, v2 = g.create_vertex(), g.create_vertex(u'Hello')
         ok_(2 == len(g))
         v3 = g.merge_vertices(v1, v2)
         ok_(1 == len(g))
