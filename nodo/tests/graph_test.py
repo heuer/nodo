@@ -607,3 +607,57 @@ class AbstractGraphTest(AbstractTest):
         ok_(g.edge_between(v2, v1) is None)
         ok_(g.edge_between(v1, v3) is None)
         ok_(g.edge_between(v3, v1) is None)
+
+    def test_merge_vertices_simple(self):
+        g = self.graph
+        v1, v2 = g.create_vertex(), g.create_vertex()
+        ok_(2 == len(g))
+        v3 = g.merge_vertices(v1, v2)
+        ok_(1 == len(g))
+
+    def test_merge_vertices(self):
+        g = self.graph
+        v1, v2 = g.create_vertex(), g.create_vertex()
+        e = g.create_edge(v1, v2)
+        ok_(1 == g.outdegree(v1))
+        ok_(0 == g.indegree(v1))
+        ok_(0 == g.outdegree(v2))
+        ok_(1 == g.indegree(v2))
+        ok_(2 == len(g))
+        v3 = g.merge_vertices(v1, v2)
+        ok_(1 == len(g))
+        ok_(0 == g.indegree(v3))
+        ok_(0 == g.outdegree(v3))
+
+    def test_merge_vertices(self):
+        g = self.graph
+        v1, v2, v3, v4 = g.create_vertex(), g.create_vertex(), g.create_vertex(), g.create_vertex()
+        e1 = g.create_edge(v1, v2)
+        e2 = g.create_edge(v2, v3)
+        e3 = g.create_edge(v4, v2)
+        ok_(4 == len(g))
+        vm = g.merge_vertices(v1, v2)
+        ok_(3 == len(g))
+        ok_(v3 in g.successors(vm))
+        ok_(v4 in g.predecessors(vm))
+        ok_(1 == g.indegree(vm))
+        ok_(1 == g.outdegree(vm))
+        
+    def test_merge_vertices3(self):
+        g = self.graph
+        v1, v2 = g.create_vertex(u'Hello'), g.create_vertex()
+        ok_(2 == len(g))
+        v3 = g.merge_vertices(v1, v2)
+        ok_(1 == len(g))
+        ok_(u'Hello' == g.value(v3))
+        ok_(XSD.string == g.datatype(v3))
+
+    def test_merge_vertices_illegal(self):
+        g = self.graph
+        v1, v2 = g.create_vertex(u'Hello'), g.create_vertex(u'there')
+        try:
+            g.merge_vertices(v1, v2)
+            self.fail('Expecting a TypeError')
+        except TypeError:
+            pass
+        ok_(2 == len(g))

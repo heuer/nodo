@@ -480,9 +480,19 @@ class IGraph(IImmutableGraph):
             The vertex/edge identifiers which become the edge's tail.
         """
 
-    def merge_vertex(a, b):
+    def merge_vertices(a, b):
         """\
-        Merges the vertices `a` and `b` and returns a vertex identifier.
+        Merges the vertices `a` and `b` and returns the identifier of the vertex
+        which represents the result of the merge.
+
+        After merging the vertices, both or at least one of the vertices may have
+        been removed from the graph.
+
+        Edges between the vertices will be deleted (they won't become self-loops).
+
+        If both vertices are literal vertices, a `TypeError` is raised. If one of
+        the vertices is a literal vertex, the resulting vertix is a literal vertex
+        as well.
 
         `a`
             A vertex
