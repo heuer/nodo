@@ -480,6 +480,16 @@ class IGraph(IImmutableGraph):
             The vertex/edge identifiers which become the edge's tail.
         """
 
+    def merge_vertex(a, b):
+        """\
+        Merges the vertices `a` and `b` and returns a vertex identifier.
+
+        `a`
+            A vertex
+        `b`
+            A vertex
+        """
+
     def delete_vertex(identifier):
         """\
         Deletes a vertex.
