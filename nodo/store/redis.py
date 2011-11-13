@@ -257,6 +257,40 @@ class RedisGraph(RedisImmutableGraph, BaseGraph):
         pipe.delete(edge) \
             .execute()
 
+    def merge_vertices(self, a, b):
+        a_lit, b_lit = self.is_literal(a), self.is_literal(b)
+        if a_lit and b_lit:
+            raise TypeError('Cannot merge two literal vertices')
+        if b_lit:
+            a, b = b, a
+        e = self.edge_between(a, b)
+        while e:
+            self.delete_edge(e)
+            e = self.edge_between(a, b)
+        e = self.edge_between(b, a)
+        while e:
+            self.delete_edge(e)
+            e = self.edge_between(b, a)
+        ingoing = self.ingoing_edges(b)
+        outgoing = self.outgoing_edges(b)
+        pipe = self._conn.pipeline()
+        if ingoing:
+            pipe.sadd('%s:ie' % a, *ingoing)
+            pipe.delete('%s:ie' % b)
+            for e in ingoing:
+                pipe.zrem(e, b)
+                pipe.zadd(e, a=1)
+        if outgoing:
+            pipe.sadd('%s:oe' % a, *outgoing)
+            pipe.delete('%s:oe' % b)
+            for e in outgoing:
+                pipe.zrem(e, b)
+                pipe.zadd(e, a=0)
+        pipe.srem(self._v_key, b)
+        pipe.delete(b)
+        pipe.execute()
+        return a
+
     def clear(self):
         conn = self._conn
         elements = []
