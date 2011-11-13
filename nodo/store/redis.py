@@ -39,7 +39,6 @@ Graph `Redis <http://redis.io/>`_ store.
 :license:      BSD License
 """
 from __future__ import absolute_import
-from itertools import chain
 import hashlib
 import redis
 from ..interfaces import IConnection, IImmutableGraph, IGraph, implements
@@ -265,28 +264,29 @@ class RedisGraph(RedisImmutableGraph, BaseGraph):
         if b_lit:
             a, b = b, a
         pipe = self._conn.pipeline()
-        for k in chain(['%s:ie' % i for i in (a, b)], ['%s:oe' % i for i in (a, b)]):
-            pipe.smembers(k)
-        res = [s for s in pipe.execute() if s]
-        common_edges = set.intersection(*res) if res else frozenset()
+        k_ie_a, k_oe_a, k_ie_b, k_oe_b = '%s:ie' % a, '%s:oe' % a, '%s:ie' % b, '%s:oe' % b
+        pipe.sinter(k_oe_a, k_ie_b)
+        pipe.sinter(k_oe_b, k_ie_a)
+        edges_a_b, edges_b_a = pipe.execute()
+        common_edges = edges_a_b.union(edges_b_a)
         pipe = self._conn.pipeline()
         if common_edges:
-            pipe.srem('%s:oe' % a, *common_edges) \
-                .srem('%s:ie' % a, *common_edges) \
+            pipe.srem(k_oe_a, *common_edges) \
+                .srem(k_ie_a, *common_edges) \
                 .srem(self._e_key, *common_edges) \
                 .delete(*common_edges)
         ingoing = self.ingoing_edges(b) - common_edges
         outgoing = self.outgoing_edges(b) - common_edges
         if ingoing:
-            pipe.sadd('%s:ie' % a, *ingoing)
+            pipe.sadd(k_ie_a, *ingoing)
             for e in ingoing:
                 pipe.zrem(e, b).zadd(e, a, 1)
         if outgoing:
-            pipe.sadd('%s:oe' % a, *outgoing)
+            pipe.sadd(k_oe_a, *outgoing)
             for e in outgoing:
                 pipe.zrem(e, b).zadd(e, a, 0)
         pipe.srem(self._v_key, b) \
-            .delete(b, '%s:ie' % b, '%s:oe' % b) \
+            .delete(b, k_ie_b, k_oe_b) \
             .execute()
         return a
 
