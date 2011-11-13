@@ -263,12 +263,11 @@ class RedisGraph(RedisImmutableGraph, BaseGraph):
             raise TypeError('Cannot merge two literal vertices')
         if b_lit:
             a, b = b, a
-        pipe = self._conn.pipeline()
         k_ie_a, k_oe_a, k_ie_b, k_oe_b = '%s:ie' % a, '%s:oe' % a, '%s:ie' % b, '%s:oe' % b
-        pipe.sinter(k_oe_a, k_ie_b)
-        pipe.sinter(k_oe_b, k_ie_a)
-        edges_a_b, edges_b_a = pipe.execute()
-        common_edges = edges_a_b.union(edges_b_a)
+        pipe = self._conn.pipeline()
+        pipe.sinter(k_oe_a, k_ie_b) \
+            .sinter(k_oe_b, k_ie_a)
+        common_edges = set.union(*pipe.execute())
         pipe = self._conn.pipeline()
         if common_edges:
             pipe.srem(k_oe_a, *common_edges) \
