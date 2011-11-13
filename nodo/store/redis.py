@@ -39,6 +39,7 @@ Graph `Redis <http://redis.io/>`_ store.
 :license:      BSD License
 """
 from __future__ import absolute_import
+from itertools import chain
 import hashlib
 import redis
 from ..interfaces import IConnection, IImmutableGraph, IGraph, implements
@@ -263,32 +264,30 @@ class RedisGraph(RedisImmutableGraph, BaseGraph):
             raise TypeError('Cannot merge two literal vertices')
         if b_lit:
             a, b = b, a
-        e = self.edge_between(a, b)
-        while e:
-            self.delete_edge(e)
-            e = self.edge_between(a, b)
-        e = self.edge_between(b, a)
-        while e:
-            self.delete_edge(e)
-            e = self.edge_between(b, a)
-        ingoing = self.ingoing_edges(b)
-        outgoing = self.outgoing_edges(b)
         pipe = self._conn.pipeline()
+        for k in chain(['%s:ie' % i for i in (a, b)], ['%s:oe' % i for i in (a, b)]):
+            pipe.smembers(k)
+        res = [s for s in pipe.execute() if s]
+        common_edges = set.intersection(*res) if res else frozenset()
+        pipe = self._conn.pipeline()
+        if common_edges:
+            pipe.srem('%s:oe' % a, *common_edges) \
+                .srem('%s:ie' % a, *common_edges) \
+                .srem(self._e_key, *common_edges) \
+                .delete(*common_edges)
+        ingoing = self.ingoing_edges(b) - common_edges
+        outgoing = self.outgoing_edges(b) - common_edges
         if ingoing:
             pipe.sadd('%s:ie' % a, *ingoing)
-            pipe.delete('%s:ie' % b)
             for e in ingoing:
-                pipe.zrem(e, b)
-                pipe.zadd(e, a=1)
+                pipe.zrem(e, b).zadd(e, a, 1)
         if outgoing:
             pipe.sadd('%s:oe' % a, *outgoing)
-            pipe.delete('%s:oe' % b)
             for e in outgoing:
-                pipe.zrem(e, b)
-                pipe.zadd(e, a=0)
-        pipe.srem(self._v_key, b)
-        pipe.delete(b)
-        pipe.execute()
+                pipe.zrem(e, b).zadd(e, a, 0)
+        pipe.srem(self._v_key, b) \
+            .delete(b, '%s:ie' % b, '%s:oe' % b) \
+            .execute()
         return a
 
     def clear(self):

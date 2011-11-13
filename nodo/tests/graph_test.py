@@ -619,15 +619,15 @@ class AbstractGraphTest(AbstractTest):
         g = self.graph
         v1, v2 = g.create_vertex(), g.create_vertex()
         e = g.create_edge(v1, v2)
-        ok_(1 == g.outdegree(v1))
-        ok_(0 == g.indegree(v1))
-        ok_(0 == g.outdegree(v2))
-        ok_(1 == g.indegree(v2))
-        ok_(2 == len(g))
+        eq_(1, g.outdegree(v1))
+        eq_(0, g.indegree(v1))
+        eq_(0, g.outdegree(v2))
+        eq_(1, g.indegree(v2))
+        eq_(2, len(g))
         v3 = g.merge_vertices(v1, v2)
-        ok_(1 == len(g))
-        ok_(0 == g.indegree(v3))
-        ok_(0 == g.outdegree(v3))
+        eq_(1, len(g))
+        eq_(0, g.indegree(v3))
+        eq_(0, g.outdegree(v3))
 
     def test_merge_vertices2(self):
         g = self.graph
@@ -646,18 +646,18 @@ class AbstractGraphTest(AbstractTest):
     def test_merge_vertices3(self):
         g = self.graph
         v1, v2 = g.create_vertex(u'Hello'), g.create_vertex()
-        ok_(2 == len(g))
+        eq_(2, len(g))
         v3 = g.merge_vertices(v1, v2)
-        ok_(1 == len(g))
+        eq_(1, len(g))
         ok_(u'Hello' == g.value(v3))
         ok_(XSD.string == g.datatype(v3))
 
     def test_merge_vertices4(self):
         g = self.graph
         v1, v2 = g.create_vertex(), g.create_vertex(u'Hello')
-        ok_(2 == len(g))
+        eq_(2, len(g))
         v3 = g.merge_vertices(v1, v2)
-        ok_(1 == len(g))
+        eq_(1, len(g))
         ok_(u'Hello' == g.value(v3))
         ok_(XSD.string == g.datatype(v3))
 
