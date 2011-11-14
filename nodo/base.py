@@ -170,7 +170,7 @@ class BaseGraph(BaseImmutableGraph):
 
     def merge_vertices(self, a, b):
         if a == b:
-            a
+            return a
         a_lit, b_lit = self.is_literal(a), self.is_literal(b)
         if a_lit and b_lit:
             raise TypeError('Cannot merge two literal vertices')
@@ -184,8 +184,7 @@ class BaseGraph(BaseImmutableGraph):
             tail.add(a)
             self.create_edge(self.head(e), *tail)
         for e in self.outgoing_edges(b):
-            tail = set(self.tail(e))
-            self.create_edge(a, *tail)
+            self.create_edge(a, *self.tail(e))
         self.delete_vertex(b)
         return a
 
