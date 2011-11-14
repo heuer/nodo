@@ -159,6 +159,9 @@ class RedisImmutableGraph(BaseImmutableGraph):
     def outdegree(self, identifier):
         return self._conn.scard('%s:oe' % identifier)
 
+    def edges_between(self, head, tail):
+        return self._conn.sinter('%s:oe' % head, '%s:ie' % tail)
+
     def edge_incidents(self, edge):
         return self._conn.zrange(edge, 0, -1)
 
