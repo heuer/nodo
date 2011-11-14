@@ -615,6 +615,14 @@ class AbstractGraphTest(AbstractTest):
         v3 = g.merge_vertices(v1, v2)
         ok_(1 == len(g))
 
+    def test_merge_same_vertix(self):
+        g = self.graph
+        v = g.create_vertex()
+        eq_(1, len(g))
+        merged = g.merge_vertices(v, v)
+        eq_(1, len(g))
+        eq_(v, merged)
+
     def test_merge_vertices(self):
         g = self.graph
         v1, v2 = g.create_vertex(), g.create_vertex()

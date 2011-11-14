@@ -169,19 +169,15 @@ class BaseGraph(BaseImmutableGraph):
         return e
 
     def merge_vertices(self, a, b):
+        if a == b:
+            a
         a_lit, b_lit = self.is_literal(a), self.is_literal(b)
         if a_lit and b_lit:
             raise TypeError('Cannot merge two literal vertices')
         if b_lit:
             a, b = b, a
-        e = self.edge_between(a, b)
-        while e:
+        for e in chain(tuple(self.edges_between(a, b)), tuple(self.edges_between(b, a))):
             self.delete_edge(e)
-            e = self.edge_between(a, b)
-        e = self.edge_between(b, a)
-        while e:
-            self.delete_edge(e)
-            e = self.edge_between(b, a)
         for e in self.ingoing_edges(b):
             tail = set(self.tail(e))
             tail.remove(b)

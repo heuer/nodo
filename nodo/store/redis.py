@@ -261,6 +261,8 @@ class RedisGraph(RedisImmutableGraph, BaseGraph):
             .execute()
 
     def merge_vertices(self, a, b):
+        if a == b:
+            return a
         a_lit, b_lit = self.is_literal(a), self.is_literal(b)
         if a_lit and b_lit:
             raise TypeError('Cannot merge two literal vertices')
