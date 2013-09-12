@@ -63,7 +63,7 @@ def connect():
     """\
 
     """
-    return RedisConnection(redis.Redis())
+    return RedisConnection()
 
 
 class RedisConnection(BaseConnection):
@@ -82,23 +82,29 @@ class RedisConnection(BaseConnection):
         self._readonly = readonly
         self._graph_class = RedisGraph if not readonly else RedisImmutableGraph
 
+    def _is_member(self, identifier):
+        return self._conn.sismember(_KEY_GRAPHS, identifier)
+
     def get(self, identifier, default=None):
-        if self._conn.sismember(_KEY_GRAPHS, identifier):
+        if self._is_member(identifier):
             return self._graph_class(self._conn, identifier)
         return default
 
     def create_graph(self, identifier=None):
-        if identifier and identifier in self.identifiers:
+        if identifier and self._is_member(identifier):
             raise KeyError()
         ident = identifier or _create_id(self._conn)
         self._conn.sadd(_KEY_GRAPHS, ident)
         return self.get(ident)
 
     def delete_graph(self, identifier):
-        g = self.get(identifier)
-        if g:
+        if self._is_member(identifier):
+            g = self.get(identifier)
             g.clear()
             self._conn.srem(_KEY_GRAPHS, identifier)
+
+    def close(self):
+        pass #del self._conn
 
     @property
     def identifiers(self):
@@ -174,6 +180,9 @@ class RedisImmutableGraph(BaseImmutableGraph):
 
     def edges(self):
         return self._conn.smembers(self._e_key)
+
+    def __eq__(self, other):
+        return self._identifier == other.identifier
 
     @property
     def identifier(self):
@@ -304,9 +313,9 @@ class RedisGraph(RedisImmutableGraph, BaseGraph):
             add('%s:oe' % e)
             add('%s:ie' % e)
         pipe = self._conn.pipeline()
-        pipe.delete(*elements) \
-            .delete(self._v_key, self._e_key) \
-            .execute()
+        if elements:
+            pipe.delete(*elements)
+        pipe.delete(self._v_key, self._e_key).execute()
 
 
 def _assert_edge(identifier):
