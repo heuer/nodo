@@ -41,8 +41,8 @@ This module provides canonicalization of literal values.
 from __future__ import absolute_import
 import re
 from decimal import Decimal, InvalidOperation
-from . import XSD
-from ._urlutils import normalize as normalize_url
+from nodo import XSD
+from nodo._urlutils import normalize as normalize_url
 
 _TRAILING_ZEROS_PATTERN = re.compile(r'[0-9](0+)$')
 
@@ -52,13 +52,13 @@ def canonicalize(value, datatype):
     Canonicalizes the `value` according to the provided `datatype`.
 
     >>> canonicalize('0001', XSD.integer)
-    ('1', u'http://www.w3.org/2001/XMLSchema#integer')
+    (u'1', u'http://www.w3.org/2001/XMLSchema#integer')
     >>> canonicalize('0001', 'http://psi.example.org/datatype')
     ('0001', 'http://psi.example.org/datatype')
     >>> canonicalize('1', XSD.boolean)
-    ('true', u'http://www.w3.org/2001/XMLSchema#boolean')
+    (u'true', u'http://www.w3.org/2001/XMLSchema#boolean')
     >>> canonicalize('.001', XSD.decimal)
-    ('0.001', u'http://www.w3.org/2001/XMLSchema#decimal')
+    (u'0.001', u'http://www.w3.org/2001/XMLSchema#decimal')
 
     `value`
         The value to normalize.
@@ -76,45 +76,45 @@ def normalize_decimal(val):
     Returns the canonical representation of a xsd:decimal value.
     
     >>> normalize_decimal('-.03')
-    '-0.03'
+    u'-0.03'
     >>> normalize_decimal('+.03')
-    '0.03'
+    u'0.03'
     >>> normalize_decimal('+.0')
-    '0.0'
+    u'0.0'
     >>> normalize_decimal('-.0')
-    '0.0'
+    u'0.0'
     >>> normalize_decimal('0')
-    '0.0'
+    u'0.0'
     >>> normalize_decimal('.0')
-    '0.0'
+    u'0.0'
     >>> normalize_decimal('0.')
-    '0.0'
+    u'0.0'
     >>> normalize_decimal('0001.')
-    '1.0'
+    u'1.0'
     >>> normalize_decimal('0001')
-    '1.0'
+    u'1.0'
     >>> normalize_decimal('-001')
-    '-1.0'
+    u'-1.0'
     >>> normalize_decimal('1.00000')
-    '1.0'
+    u'1.0'
     >>> normalize_decimal('123.4')
-    '123.4'
+    u'123.4'
     >>> normalize_decimal('123.400000000')
-    '123.4'
+    u'123.4'
     >>> normalize_decimal('123.000000400000000')
-    '123.0000004'
+    u'123.0000004'
     >>> normalize_decimal('0000123.4')
-    '123.4'
+    u'123.4'
     >>> normalize_decimal('0000.0')
-    '0.0'
+    u'0.0'
     >>> normalize_decimal('+0000.0')
-    '0.0'
+    u'0.0'
     >>> normalize_decimal('-0000.0')
-    '0.0'
+    u'0.0'
     >>> normalize_decimal('-123.4')
-    '-123.4'
+    u'-123.4'
     >>> normalize_decimal(' -123.4    ')
-    '-123.4'
+    u'-123.4'
     >>> normalize_decimal('-123.A')
     Traceback (most recent call last):
     ...
@@ -129,7 +129,7 @@ def normalize_decimal(val):
     ValueError: Illegal xsd:decimal: "A.b"
     """
     try:
-        res = str(Decimal(val.strip()))
+        res = unicode(Decimal(val.strip()))
     except InvalidOperation:
         raise ValueError('Illegal xsd:decimal: "%s"' % val)
     dot_idx = res.find(u'.')
@@ -139,25 +139,26 @@ def normalize_decimal(val):
         int_part, frac_part = res.split(u'.')
         m = _TRAILING_ZEROS_PATTERN.search(frac_part)
         if m:
-            res = int_part + '.' + frac_part[:m.start(1)]
+            res = int_part + u'.' + frac_part[:m.start(1)]
     if res == u'-0.0':
         res = u'0.0'
     return res
+
 
 def normalize_boolean(val):
     """\
     Returns the canonical representation of a xsd:boolean value.
     
     >>> normalize_boolean('0')
-    'false'
+    u'false'
     >>> normalize_boolean('1')
-    'true'
+    u'true'
     >>> normalize_boolean('true')
-    'true'
+    u'true'
     >>> normalize_boolean('    true    ')
-    'true'
+    u'true'
     >>> normalize_boolean('false')
-    'false'
+    u'false'
     >>> normalize_boolean('')
     Traceback (most recent call last):
     ...
@@ -180,26 +181,26 @@ def normalize_integer(val):
     Returns the canonical representation of a xsd:integer value.
     
     >>> normalize_integer('-0')
-    '0'
+    u'0'
     >>> normalize_integer('00000')
-    '0'
+    u'0'
     >>> normalize_integer('+0')
-    '0'
+    u'0'
     >>> normalize_integer('-000100')
-    '-100'
+    u'-100'
     >>> normalize_integer('+000100')
-    '100'
+    u'100'
     >>> normalize_integer(' +000100 ')
-    '100'
+    u'100'
     >>> normalize_integer('100')
-    '100'
+    u'100'
     >>> normalize_integer('')
     Traceback (most recent call last):
     ...
     ValueError: Illegal xsd:integer: ""
     """
     try:
-        return str(int(val))
+        return unicode(int(val))
     except ValueError:
         raise ValueError('Illegal xsd:integer: "%s"' % val)
 
