@@ -306,16 +306,13 @@ class RedisGraph(RedisImmutableGraph, BaseGraph):
 
     def clear(self):
         conn = self._conn
-        elements = []
+        elements = [self._v_key, self._e_key]
         add = elements.append
         for e in conn.sunion(self._v_key, self._e_key):
             add(e)
             add('%s:oe' % e)
             add('%s:ie' % e)
-        pipe = self._conn.pipeline()
-        if elements:
-            pipe.delete(*elements)
-        pipe.delete(self._v_key, self._e_key).execute()
+        self._conn.delete(*elements)
 
 
 def _assert_edge(identifier):
