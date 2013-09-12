@@ -38,9 +38,10 @@ Abstract graph tests.
 :organization: Semagia - http://www.semagia.com/
 :license:      BSD License
 """
-from nose.tools import ok_, eq_, raises
+from nose.tools import ok_, eq_
 from nodo import constants, XSD
 from abstract_test import AbstractTest
+
 
 class AbstractGraphTest(AbstractTest):
 

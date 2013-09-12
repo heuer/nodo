@@ -38,9 +38,10 @@ Abstract NetworkX tests.
 :organization: Semagia - http://www.semagia.com/
 :license:      BSD License
 """
-from nose.tools import ok_, eq_, raises
-from nodo import constants, XSD, nxutils
+from nose.tools import ok_
+from nodo import XSD, nxutils
 from abstract_test import AbstractTest
+
 
 class AbstractNXTest(AbstractTest):
 

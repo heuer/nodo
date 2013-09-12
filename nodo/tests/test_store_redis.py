@@ -42,6 +42,7 @@ from unittest import TestCase
 from graph_test import AbstractGraphTest
 from nodo.store.redis import RedisConnection as Connection
 
+
 class TestRedisGraph(AbstractGraphTest, TestCase):
 
     conn = Connection()
@@ -51,3 +52,8 @@ class TestRedisGraph(AbstractGraphTest, TestCase):
 
     def delete_graph(self, graph):
         self.conn.delete_graph(graph.identifier)
+
+
+if __name__ == '__main__':
+    import nose
+    nose.runmodule()

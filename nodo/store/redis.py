@@ -58,6 +58,7 @@ _PREFIX2KIND = {
     _PREFIX_LITERAL: consts.KIND_LITERAL,
 }
 
+
 def connect():
     """\
 
@@ -307,34 +308,42 @@ class RedisGraph(RedisImmutableGraph, BaseGraph):
             .delete(self._v_key, self._e_key) \
             .execute()
 
+
 def _assert_edge(identifier):
     if _kind(identifier) != consts.KIND_EDGE:
         raise TypeError('Expected an edge identifier, got "%s"' % _kind_name(identifier))
+
 
 def _assert_vertex(identifier):
     if _kind(identifier) not in (consts.KIND_VERTEX, consts.KIND_LITERAL):
         raise TypeError('Expected a vertex identifier, got "%s"' % _kind_name(identifier))
 
+
 def _kind_name(identifier):
     return consts.kind_name(_kind(identifier))
+
 
 def _kind(identifier):
     return _PREFIX2KIND.get(identifier[:2], consts.KIND_UNKNOWN)
 
+
 def _create_id(redis_conn):
     return str(redis_conn.incr(_KEY_CONSTRUCT_COUNTER))
+
 
 def _literalid(value, datatype):
     did = _datatype2id(datatype)
     vh = _valuehash(value)
     return 'l:%d:%s' % (did, vh)
 
+
 def _id2datatype(i):
     return consts.XSDID2URI.get(int(i))
+
 
 def _datatype2id(iri):
     return consts.XSDURI2ID.get(iri)
 
+
 def _valuehash(s):
     return hashlib.sha1(str(s)).hexdigest()
-

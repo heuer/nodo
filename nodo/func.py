@@ -47,6 +47,7 @@ def vertices(g):
     """
     return g.vertices()
 
+
 def edges(g):
     """\
     Returns all edges of the graph `g`.
@@ -56,26 +57,34 @@ def edges(g):
     """
     return g.edges()
 
+
 def kind(g, identifier):
     return g.kind(identifier)
+
 
 def is_vertex(g, identifier):
     return g.is_vertex(identifier)
 
+
 def is_edge(g, identifier):
     return g.is_edge(identifier)
+
 
 def is_literal(g, identifier):
     return g.is_literal(identifier)
 
+
 def literal(g, identifier):
     return g.literal(identifier)
+
 
 def value(g, identifier):
     return g.value(identifier)
 
+
 def datatype(g, identifier):
     return g.datatype(identifier)
+
 
 def is_neighbour(g, a, b):
     """\
@@ -85,6 +94,7 @@ def is_neighbour(g, a, b):
         The graph.
     """
     return g.is_neighbour(a, b)
+
 
 def neighbours(g, *identifiers):
     """\

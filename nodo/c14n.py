@@ -44,6 +44,9 @@ from decimal import Decimal, InvalidOperation
 from . import XSD
 from ._urlutils import normalize as normalize_url
 
+_TRAILING_ZEROS_PATTERN = re.compile(r'[0-9](0+)$')
+
+
 def canonicalize(value, datatype):
     """\
     Canonicalizes the `value` according to the provided `datatype`.
@@ -67,8 +70,6 @@ def canonicalize(value, datatype):
         return normalizer(unicode(value)), datatype
     return value, datatype
 
-
-_TRAILING_ZEROS_PATTERN = re.compile(r'[0-9](0+)$')
 
 def normalize_decimal(val):
     """\
@@ -133,7 +134,7 @@ def normalize_decimal(val):
         raise ValueError('Illegal xsd:decimal: "%s"' % val)
     dot_idx = res.find(u'.')
     if dot_idx == -1:
-        res = res + u'.0'
+        res += u'.0'
     else:
         int_part, frac_part = res.split(u'.')
         m = _TRAILING_ZEROS_PATTERN.search(frac_part)
@@ -172,6 +173,7 @@ def normalize_boolean(val):
     if v in (u'1', u'true'):
         return u'true'
     raise ValueError('Illegal xsd:boolean: "%s"' % val)
+
 
 def normalize_integer(val):
     """\

@@ -15,9 +15,9 @@
 #       disclaimer in the documentation and/or other materials provided
 #       with the distribution.
 #
-#     * Neither the name of the project nor the names of the contributors 
-#       may be used to endorse or promote products derived from this 
-#       software without specific prior written permission.
+#     * Neither the project name nor the names of the contributors may be 
+#       used to endorse or promote products derived from this software 
+#       without specific prior written permission.
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 # "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -32,37 +32,34 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 """\
-Utilities to convert a Nodo graph into a
-`NetworkX graph <http://networkx.lanl.gov/>`_
+Abstract connection tests.
 
 :author:       Lars Heuer (heuer[at]semagia.com)
 :organization: Semagia - http://www.semagia.com/
-:license:      BSD license
+:license:      BSD License
 """
-import networkx as nx
+from nose.tools import ok_, eq_
 
 
-def to_nx(graph):
-    """\
-    Converts a Nodo `graph` into a NetworkX directed graph.
+class AbstractConnectionTest(object):
 
-    .. note::
+    def get_connection(self):
+        """\
+        Returns an connection.
+        """
+        raise NotImplementedError()
 
-        Only 2-uniform graphs are supported, otherwise a ValueError
-        is raised.
+    def test_create_graph(self):
+        conn = self.get_connection()
+        ident = 'pumuckel'
+        ok_(ident not in conn)
+        ok_(conn.get(ident) is None)
+        default = (1,2,3)
+        eq_(default, conn.get(ident, default))
+        try:
+            conn[ident]
+            self.fail('Expected KeyError for unknown graph identifier')
+        except KeyError:
+            pass
 
-    `graph`
-        The Nodo graph to convert.
-    """
-    def edges():
-        edge_incidents = graph.edge_incidents
-        literal = graph.literal
-        for edge in graph.edges():
-            incidents = tuple(edge_incidents(edge))
-            if not len(incidents) == 2:
-                raise ValueError('The provided graph is not a 2-uniform graph')
-            src, target = incidents
-            yield literal(src) or src, literal(target) or target
-    g = nx.DiGraph()
-    g.add_edges_from(edges())
-    return g
+

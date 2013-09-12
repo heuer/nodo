@@ -44,6 +44,7 @@ from itertools import chain
 from . import XSD, constants as consts
 from .interfaces import IImmutableGraph, IGraph, IConnection, implements
 
+
 class BaseImmutableGraph(object):
     """\
     Provides some default implementations for an `IImmutableGraph`
@@ -173,7 +174,7 @@ class BaseGraph(BaseImmutableGraph):
             return a
         a_lit, b_lit = self.is_literal(a), self.is_literal(b)
         if a_lit and b_lit:
-            raise TypeError('Cannot merge two literal vertices')
+            raise TypeError('Cannot merge literal vertices')
         if b_lit:
             a, b = b, a
         for e in chain(tuple(self.edges_between(a, b)), tuple(self.edges_between(b, a))):
@@ -208,5 +209,5 @@ class BaseConnection(object):
             raise KeyError('The key "%s" does not exist' % key)
         return graph
 
-    def __contains__(self, key):
+    def __contains__(self, graph):
         return graph in self.identifiers

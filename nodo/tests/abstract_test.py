@@ -39,6 +39,7 @@ Abstract tests.
 :license:      BSD License
 """
 
+
 class AbstractTest(object):
 
     def setUp(self):

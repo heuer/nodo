@@ -53,6 +53,7 @@ _KIND2NAME = {
     KIND_LITERAL: u'literal vertex',
 }
 
+
 def kind_name(i):
     return _KIND2NAME.get(i, u'unknown')
 

@@ -38,9 +38,10 @@ Abstract functional tests
 :organization: Semagia - http://www.semagia.com/
 :license:      BSD License
 """
-from nose.tools import ok_, eq_, raises
-from nodo import constants, XSD, func as f
+from nose.tools import ok_
+from nodo import XSD, func as f
 from abstract_test import AbstractTest
+
 
 class AbstractFunctionalTest(AbstractTest):
 
