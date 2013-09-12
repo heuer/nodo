@@ -43,6 +43,14 @@ from nose.tools import ok_, eq_
 
 class AbstractConnectionTest(object):
 
+    def setUp(self):
+        self.ident = 'pumuckl'
+        self.conn = self.get_connection()
+
+    def tearDown(self):
+        self.conn.delete_graph(self.ident)
+        self.conn.close()
+
     def get_connection(self):
         """\
         Returns an connection.
@@ -50,16 +58,33 @@ class AbstractConnectionTest(object):
         raise NotImplementedError()
 
     def test_create_graph(self):
-        conn = self.get_connection()
-        ident = 'pumuckel'
+        conn = self.conn
+        ident = self.ident
         ok_(ident not in conn)
         ok_(conn.get(ident) is None)
         default = (1,2,3)
         eq_(default, conn.get(ident, default))
         try:
-            conn[ident]
+            graph = conn[ident]
             self.fail('Expected KeyError for unknown graph identifier')
         except KeyError:
             pass
+        graph = conn.create_graph(ident)
+        ok_(graph is not None)
+        eq_(ident, graph.identifier)
+        ok_(ident in conn)
+        eq_(graph, conn.get(ident))
+        eq_(graph, conn[ident])
 
+    def test_create_graph_duplicate(self):
+        conn = self.conn
+        ident = self.ident
+        ok_(ident not in conn)
+        graph = conn.create_graph(ident)
+        ok_(graph is not None)
+        try:
+            g = conn.create_graph(ident)
+            self.fail('Expected a KeyError for attempt to create graph with existing identifier')
+        except KeyError:
+            pass
 
